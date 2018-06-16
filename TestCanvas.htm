@@ -1,0 +1,44 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="_box.css">
+	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="blockly-master/blockly-master/blockly_compressed.js"></script>
+	<script type="text/javascript" src="blockly-master/blockly-master/blocks_compressed.js"></script>
+	<script type="text/javascript" src="blockly-master/blockly-master/msg/js/en.js"></script>
+	<script type="text/javascript" src="blockly-master/blockly-master/javascript_compressed.js"></script>
+	<script type="text/javascript" src="blockly-master/blockly-master/generators/javascript/move.js"></script>
+	<script type="text/javascript" src="MyBlocks.js"></script>
+	<script type="text/javascript" src="_box.js"></script>
+
+</head>
+<body>
+	<div id="PlayGround" class= "PlayGround">
+		
+	</div>
+	<img id="Finish" src="end.png" style="position: absolute;">
+	<img id="ball" src="ball.png">
+		
+	
+	
+	<div id="WinText" class="Win">You win!</div>
+	<div id="LoseText" class="Lose">You lose...</div>
+	<div id="blocklyDiv" class="Blockly">
+	<xml id="toolbox" style="display: none">
+		<block type="Right"></block>
+		<block type="Left"></block>
+		<block type="Up"></block>
+		<block type="Down"></block>
+		<block type="controls_repeat"></block>
+	</xml>
+	<textarea id="codes" class="Codesarea"></textarea>
+	<button id="move">Go</button>
+	<button id="reset">New game</button>
+
+
+	
+
+	<!--
+	<canvas id="canv" width="600" height="600" style="border: 1px solid #000000;">	</canvas>
+	-->
+</body>
+</html>

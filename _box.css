@@ -1,0 +1,51 @@
+.GreyBox{
+	background:#EEEEEE;
+	height:40px;
+	width:40px;
+	position:absolute;
+
+}
+
+.WhiteBox{
+	background:#FFFFFF;
+	height:40px;
+	width:40px;
+	position:absolute;
+
+}
+
+.PlayGround{
+	background:#EEEFFF;
+	height: 400px;
+	width: 400px;
+	position: absolute;
+}
+
+
+.Blockly{
+	height: 500px;
+	width: 500px;
+}
+.Codesarea{
+	height: 200px;
+	width: 400px;
+	position: absolute;
+}
+.Win{
+	font-size: 30;
+	font-style: bold;
+	color: green;
+	position: absolute;
+	visibility: visible;
+	left: 200px;
+	top: 200px;
+}
+.Lose{
+	font-size: 30;
+	font-style: bold;
+	color: red;
+	position: absolute;
+	visibility: visible;
+	left: 200px;
+	top: 200px;
+}
