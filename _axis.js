@@ -24,7 +24,9 @@ $(document).ready(function(){
 	$("button#move").click(function(){
 		//Blockly.JavaScript.addReservedWords('code');
 		var code = Blockly.JavaScript.workspaceToCode(workspace);
-		$("#codes").text(code);
+		$("#codes").text("");
+
+		eval(code);
 
 		
 		
@@ -47,6 +49,34 @@ $(document).ready(function(){
 
 	}
 
+	function setPigCor(x,y){
+		if(x == $("#pig").attr("x") && y == $("#pig").attr("y") ){
+			$("#codes").text(function(index, oldContext){
+				return oldContext+"Pig's coordinate is correct!\n";
+			});
+		}else{	
+			$("#codes").text(function(index, oldContext){
+				return oldContext+"Pig's coordinate is wrong, please try a new game\n";
+			});		
+			
+		}
+
+	}
+	function setBirdCor(x,y){
+		if(x == $("#bird").attr("x") && y == $("#bird").attr("y") ){
+			$("#codes").text(function(index, oldContext){
+				return oldContext+"Bird's coordinate is correct!\n";
+			});
+			
+		}else{
+			$("#codes").text(function(index, oldContext){
+				return oldContext+"Bird's coordinate is wrong, please try a new game\n";
+			});
+			
+		}
+
+	}
+
 
 
 
@@ -58,13 +88,16 @@ $(document).ready(function(){
 
 	function move(animal, x, y){
 		animal.offset({top:8+15+(6-y)*size,left:8+15+(x+8)*size});
+		animal.attr("x",x);
+		animal.attr("y",y);
 	}
 
 
 	function resetPosition(animal){
 		var x = Math.floor(Math.random()*17)-8;
 		var y = Math.floor(Math.random()*13)-6;
-		move(animal,x,y)
+		move(animal,x,y);
+
 		return {'x':x,'y':y};
 	}
 
