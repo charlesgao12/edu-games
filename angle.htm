@@ -1,6 +1,6 @@
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="_axis.css">
+	<link rel="stylesheet" type="text/css" href="_angle.css">
 	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="blockly-master/blockly-master/blockly_compressed.js"></script>
 	<script type="text/javascript" src="blockly-master/blockly-master/blocks_compressed.js"></script>
@@ -8,28 +8,30 @@
 	<script type="text/javascript" src="blockly-master/blockly-master/javascript_compressed.js"></script>
 	<script type="text/javascript" src="blockly-master/blockly-master/generators/javascript/myblockcodes.js"></script>
 	<script type="text/javascript" src="MyBlocks.js"></script>
-	<script type="text/javascript" src="_axis.js"></script>
+	<script type="text/javascript" src="_angle.js"></script>
 
 </head>
 <body>
-	<canvas id="canvas" width="540" height="420" sytle="border:1px solid #000000;"></canvas>
-	<img id="pig" src="pig.svg" width="30px" height="30px">
+	<canvas id="canvas" width="400px" height="400px" style="background: #EEEEEE"></canvas>
+	
+	<img id="pig" src="pig.svg" width="20px" height="20px">
+	<img id="bird" src="bird.png" width="80px" height="19px" style="visibility: hidden" >
 
-	<img id="bird" src="bird.svg" width="30px" height="30px">
+	
 	<div id="pointer" class="pointer"></div>
 	
 	<div id="blocklyDiv" class="Blockly">
 	<xml id="toolbox" style="display: none">		
-		<block type="pigCoordinate" disabled="true"></block>
-		<block type="birdCoordinate" disabled="true"></block>
+		<block type="turn" ></block>
+		
 	</xml>
 	<textarea id="codes" class="Codesarea"></textarea>
 	<button id="move" class="moveButton">Answer</button>
 	<button id="reset" class="resetButton">New game</button>
 	<div id="PigWinText" class="PigWin">Pig's coordinate is correct!</div>
 	<div id="PigLoseText" class="PigLose">Pig's coordinate is wrong!</div>
-	<div id="BirdWinText" class="BirdWin">Bird's coordinate is correct!</div>
-	<div id="BirdLoseText" class="BirdLose">Bird's coordinate is wrong!</div>
+	<div id="BirdWinText" class="BirdWin">Your answer is correct!</div>
+	<div id="BirdLoseText" class="BirdLose">Your answer is wrong!</div>
 
 
 

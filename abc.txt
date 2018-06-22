@@ -1,0 +1,1 @@
+<xml xmlns="http://www.w3.org/1999/xhtml"><block type="pigCoordinate" id="0d*Rl~?nq`@?F9N;`]q)" x="22" y="26"><field name="X">-1</field><field name="Y">-1</field></block><block type="birdCoordinate" id="3VM=57[@eiZ~48y#|_[R" x="21" y="121"><field name="X">-1</field><field name="Y">-1</field></block></xml>

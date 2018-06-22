@@ -20,3 +20,10 @@ Blockly.JavaScript['birdCoordinate']=function(block){
 	var y = block.getFieldValue('Y');
 	return "setBirdCor("+x+","+y+");";
 };
+
+Blockly.JavaScript['turn']=function(block){
+	var lw = block.getFieldValue('lw');
+	var angle = block.getFieldValue('angle');
+	return "turnBirdAndCheck(\""+lw+"\","+angle+");";
+};
+

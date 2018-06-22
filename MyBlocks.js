@@ -184,3 +184,30 @@ var birdCoordinate = {
   "colour":120  
 
 };
+
+var turn = {
+  "type": "turn",  
+  "message0": "Turn : ",
+  "message1": "%1",
+  "args1": [
+    {
+      "type": "field_dropdown",
+      "name": "lw",
+      "options": [
+        [ "Left (anticlockwise)", "l" ],
+        [ "Right (clockwise)", "r" ]        
+      ]
+    }
+  ],
+  "message2":"Angle : %1",  
+  "args2": [
+    {
+      "type": "field_angle",
+      "name": "angle",
+      "angle":"90"      
+    }
+  ],
+
+  "colour":120  
+
+};

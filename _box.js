@@ -33,7 +33,7 @@ $(document).ready(function(){
   };
 
   var workspace =Blockly.inject('blocklyDiv',{toolbox:document.getElementById('toolbox')});
-  $("button#move").offset({top:480,left:30});
+  $("button#move").offset({top:430,left:350});
   $("button#move").click(function(){
   	//Blockly.JavaScript.addReservedWords('code');
   	var code = Blockly.JavaScript.workspaceToCode(workspace);
@@ -47,7 +47,7 @@ $(document).ready(function(){
 
   });
 
-  $("button#reset").offset({top:480,left:100});
+  $("button#reset").offset({top:430,left:250});
   $("button#reset").click(function(){
   	reset();
   });

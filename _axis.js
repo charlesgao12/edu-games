@@ -20,13 +20,27 @@ $(document).ready(function(){
 	
 
 	var workspace =Blockly.inject('blocklyDiv',{toolbox:document.getElementById('toolbox')});
+	var initCode = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"pigCoordinate\" id=\"0d*Rl~?nq`@?F9N;`]q)\" x=\"22\" y=\"26\"><field name=\"X\">-1</field><field name=\"Y\">-1</field></block><block type=\"birdCoordinate\" id=\"3VM=57[@eiZ~48y#|_[R\" x=\"21\" y=\"121\"><field name=\"X\">-1</field><field name=\"Y\">-1</field></block></xml>";
+	var xml = Blockly.Xml.textToDom(initCode);
+	Blockly.Xml.domToWorkspace(xml, workspace);
+	//end of startting
+
+
 	//$("button#move").offset({top:450,left:30});
 	$("button#move").click(function(){
 		//Blockly.JavaScript.addReservedWords('code');
 		var code = Blockly.JavaScript.workspaceToCode(workspace);
 		$("#codes").text("");
+		$("#PigWinText").hide();
+		$("#PigLoseText").hide();
+		$("#BirdWinText").hide();
+		$("#BirdLoseText").hide();
 
 		eval(code);
+		//var xml = Blockly.Xml.workspaceToDom(workspace);
+		//var xml_text = Blockly.Xml.domToText(xml);
+		//$("#codes").text(xml_text);
+
 
 		
 		
@@ -41,37 +55,43 @@ $(document).ready(function(){
 		reset();
 	});
 
+	function birdAnimation1(){
+		$("#pointer").animate({width:"60px"},1000);
+		$("#pointer").width(0);	
+	}
+
 	function reset(){
 		  	resetPosition($("#pig"));
-		  	resetPosition($("#bird"));
-		  	$("#WinText").hide();
-		  	$("#LoseText").hide();
+		  	birdp=resetPosition($("#bird"));
+		  	//$("#pointer").offset({top:8+30+(6-birdp.y)*size,left:12+8+30+(birdp.x+8)*size});
+		  	$("#PigWinText").hide();
+		  	$("#PigLoseText").hide();
+		  	$("#BirdWinText").hide();
+		  	$("#BirdLoseText").hide();
+		  	
+		  	//birdAnimation1();
+		  	
+		  	
+
+		  	
 
 	}
 
 	function setPigCor(x,y){
 		if(x == $("#pig").attr("x") && y == $("#pig").attr("y") ){
-			$("#codes").text(function(index, oldContext){
-				return oldContext+"Pig's coordinate is correct!\n";
-			});
+			$("#PigWinText").show();
 		}else{	
-			$("#codes").text(function(index, oldContext){
-				return oldContext+"Pig's coordinate is wrong, please try a new game\n";
-			});		
+			$("#PigLoseText").show();
 			
 		}
 
 	}
 	function setBirdCor(x,y){
 		if(x == $("#bird").attr("x") && y == $("#bird").attr("y") ){
-			$("#codes").text(function(index, oldContext){
-				return oldContext+"Bird's coordinate is correct!\n";
-			});
+			$("#BirdWinText").show();
 			
 		}else{
-			$("#codes").text(function(index, oldContext){
-				return oldContext+"Bird's coordinate is wrong, please try a new game\n";
-			});
+			$("#BirdLoseText").show();
 			
 		}
 
