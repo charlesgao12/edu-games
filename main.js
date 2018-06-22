@@ -1,4 +1,4 @@
-var pages = ["simple.htm","axis.htm","angle.htm"];
+var pages = ["Simple.htm","axis.htm","angle.htm"];
 var playing =0;
 $(document).ready(
 	function(){
