@@ -27,3 +27,26 @@ Blockly.JavaScript['turn']=function(block){
 	return "turnBirdAndCheck(\""+lw+"\","+angle+");";
 };
 
+Blockly.JavaScript['faceDirection']=function(block){
+	var angle = block.getFieldValue('angle');
+	return "face("+angle+");";
+};
+Blockly.JavaScript['movePencil']=function(block){
+	
+	return "drawLine();";
+};
+Blockly.JavaScript['turnPen']=function(block){
+	var lw = block.getFieldValue('lw');
+	var angle = block.getFieldValue('angle');
+	return "turnPencil(\""+lw+"\","+angle+");";
+};
+
+Blockly.JavaScript['moveTot']=function(block){
+	var x = block.getFieldValue('x');
+	var y = block.getFieldValue('y');
+	return "moveTo("+x+","+y+");";
+};
+
+
+
+

@@ -7,6 +7,10 @@ $(document).ready(
 	}
 );
 
+function canvas(){
+	$("#playground").attr('src',"canvas.htm");
+}
+
 function play(index){
 	playing =index;
 	$("#playground").attr('src',pages[index]);	

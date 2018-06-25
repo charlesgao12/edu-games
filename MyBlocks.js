@@ -74,7 +74,7 @@ var downjson = {
 var pigCoordinate = {
   "type": "pigCoordinate",
   
-  "message0": "Pig's coordinate: ",
+  "message0": "Pig's coordinates: ",
   "message1":"x : %1",  
   "args1": [
     {
@@ -131,7 +131,7 @@ var pigCoordinate = {
 var birdCoordinate = {
   "type": "birdCoordinate",
   
-  "message0": "Bird's coordinate: ",
+  "message0": "Bird's coordinates: ",
   "message1":"x : %1",  
   "args1": [
     {
@@ -211,3 +211,85 @@ var turn = {
   "colour":120  
 
 };
+var faceDirection = {
+  "type": "faceDirection",  
+  "message0": "Point in direction : ",
+  "message1": "%1",
+  "args1": [
+    {
+      "type": "field_angle",
+      "name": "angle",
+      "angle":"30",
+      
+    }
+  ],
+  "nextStatement":null,
+    "previousStatement":null,
+
+  "colour":120  
+
+};
+
+var moveTot = {
+  "type": "moveTot",  
+  "message0": "Move to : ",
+  "message1": "x: %1, y: %2",
+  "args1": [
+    {
+      "type": "field_number",
+      "name": "x",
+      "angle":"0"      
+    },
+    {
+      "type": "field_number",
+      "name": "y",
+      "angle":"0"      
+    }
+  ],
+  "nextStatement":null,
+    "previousStatement":null,
+
+  "colour":120  
+
+};
+
+
+var movePencil = {
+  "type": "movePencil",  
+  "message0": "Draw a line",
+  "nextStatement":null,
+    "previousStatement":null,
+  "colour":120  
+
+};
+
+
+
+
+var turnPen = {
+  "type": "turnPen",  
+  "message0": "Turn : ",
+  "message1": "%1",
+  "args1": [
+    {
+      "type": "field_dropdown",
+      "name": "lw",
+      "options": [
+        [ "Left (anticlockwise)", "l" ],
+        [ "Right (clockwise)", "r" ]        
+      ]
+    }
+  ],
+  "message2":"Angle : %1",  
+  "args2": [
+    {
+      "type": "field_angle",
+      "name": "angle",
+      "angle":"90"      
+    }
+  ],
+  "nextStatement":null,
+    "previousStatement":null,
+
+  "colour":120   
+}

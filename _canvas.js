@@ -1,28 +1,139 @@
 $(document).ready(function(){
-	var long =$("#canvas").width()/2
-	var size = 30;
+	$("#PigWinText").hide();
+	$("#PigLoseText").hide();
+	$("#BirdWinText").hide();
+	$("#BirdLoseText").hide();
 	
 	var canvas = document.getElementById("canvas");
-	var ctx =canvas.getContext("2d");
-	var birdAng=0
-	var pigAng =0
+	var ctx =canvas.getContext("2d");	
+	var pencil = document.getElementById("pencil")
+	var pencilAngle = 0;
+	var pencilPosition ={x:0,y:0};
+	var actionList = new Array();
+	moveTo(0,0);
 	
-	reset();
+	//draw(actionList)
+
+	function draw(actions){
+		actionList = actions;
+		setTimeout(animation,500);
+
+	}
+
+
+	function animation(){
+		if(actionList.length >0){
+			action = actionList[0];
+			actionList.splice(0,1);
+			pencilMove(action.angle,action.steps,animation)
+
+		}
+		
+	}
+	
+	
+
+
+	
+	
 
 
 	//$("#blocklyDiv").offset({top:0,left:550})
 	//$("#codes").offset({top:500,left:8});
-	Blockly.FieldAngle.CLOCKWISE=true;
-	Blockly.FieldAngle.OFFSET=90;
-	Blockly.Blocks['turn']={
+
+	Blockly.Blocks['turnPen']={
 		init: function(){
-			this.jsonInit(turn);  		
+			this.jsonInit(turnPen);  		
 		}
 	};
+	Blockly.FieldAngle.CLOCKWISE=true;
+	Blockly.FieldAngle.OFFSET=90;
+	Blockly.Blocks['faceDirection']={
+		init: function(){
 
+			this.jsonInit(faceDirection);  	
+			// this.setOnChange(function(changeEvent) {
+			//       if (this.getInput('NUM').connection.targetBlock()) {
+			//         this.setWarningText(null);
+			//       } else {
+			//         this.setWarningText('Must have an input block.');
+			//       }
+			//     });
+
+
+		}
+
+	};
+	Blockly.Blocks['movePencil']={
+		init: function(){
+			this.jsonInit(movePencil);  		
+		}
+	};
+	Blockly.Blocks['moveTot']={
+		init: function(){
+			this.jsonInit(moveTot);  		
+		}
+	};
 	
 
 	var workspace =Blockly.inject('blocklyDiv',{toolbox:document.getElementById('toolbox')});
+
+	function moveTo(x,y){//this function is to be called by blockly, as the blockly coordiates are different from canvas'
+		x = x+ canvas.width/2;
+		y = y+ canvas.height/2;
+		pencilMoveTo(x,y);
+	}
+
+
+	function pencilMoveTo(x,y){//if x,y = 0,0, position.x ,y = 240,180
+		// pencilPosition.x=x;
+		// pencilPosition.y=y;		
+		pencilPosition.x=x;
+		pencilPosition.y=y;
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+		ctx.drawImage(pencil, x,y,40,40);
+		ctx.moveTo(x,y);
+		//ctx.beginPath();
+	}
+
+	function drawLine(){
+		actionList.push({angle:pencilAngle,steps:40});
+	}
+
+	function turnPencil(lw,angle){
+		if(lw=="l"){
+			pencilAngle -= angle;
+
+		}else{
+			pencilAngle+=angle;
+
+		}
+	}
+
+	function face(angle){
+		pencilAngle = angle;
+	}
+	function pencilMove(angle,steps,callback){
+		//alert(angle+":"+steps);
+		pencilAngle = angle;
+		x = steps*Math.sin(pencilAngle*Math.PI/180)
+		y = steps*Math.cos(pencilAngle*Math.PI/180)
+
+		//ctx.beginPath()
+
+		ctx.moveTo(pencilPosition.x,pencilPosition.y);
+
+		ctx.lineTo(pencilPosition.x+x,pencilPosition.y-y);
+		pencilMoveTo(pencilPosition.x+x,pencilPosition.y-y)
+		ctx.stroke();
+		// window.requestAnimationFrame(callback);		
+		setTimeout(callback,500);
+
+	}
+
+	
+
+	
 	// var initCode = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"pigCoordinate\" id=\"0d*Rl~?nq`@?F9N;`]q)\" x=\"22\" y=\"26\"><field name=\"X\">-1</field><field name=\"Y\">-1</field></block><block type=\"birdCoordinate\" id=\"3VM=57[@eiZ~48y#|_[R\" x=\"21\" y=\"121\"><field name=\"X\">-1</field><field name=\"Y\">-1</field></block></xml>";
 	// var xml = Blockly.Xml.textToDom(initCode);
 	// Blockly.Xml.domToWorkspace(xml, workspace);
@@ -43,7 +154,10 @@ $(document).ready(function(){
 		//var xml = Blockly.Xml.workspaceToDom(workspace);
 		//var xml_text = Blockly.Xml.domToText(xml);
 		//$("#codes").text(xml_text);
+		actionList=new Array();
 		eval(code);
+		draw(actionList);
+
 
 
 		
@@ -113,49 +227,16 @@ $(document).ready(function(){
 
 
 	function reset(){
+		pencilAngle = 0;
+		pencilPosition ={x:0,y:0};
+		actionList = new Array();
+		ctx.beginPath();
+		moveTo(0,0);
+		
 
-			pigAng = Math.floor(Math.random()*24)*15; //0-24
-			var angle = Math.floor(Math.random()*24)*15;
 
 
 			
-			//alert(i+""+angle+":"+Math.sin(angle)+":"+Math.cos(angle));
-			var x =  Math.sin(pigAng*Math.PI/180) * long*0.5;
-			var y = Math.cos(pigAng*Math.PI/180) * long*0.5;
-
-			var pigXO = 198;
-			var pigYO = 195;
-
-		  	$("#pig").offset({top:pigYO-y,left:pigXO+x});
-		  	//$("#canvas").offset({top:100,left:100});
-
-		  	//ctx.save();
-
-		  	//ctx.translate(200,200);
-		  	//ctx.rotate(birdAng*Math.PI/180);
-		  	//image=document.getElementById("bird")
-		  	//ctx.drawImage(image,-10,-11,80,19)
-		  	turnBird("r",angle);
-
-
-
-		  	// rotate = 90//Math.floor(Math.random()*24)*15;
-
-
-		  	// $("#bird").css({"transform":"rotate("+rotate+"deg)"});
-		  	// $("#bird").css({"-ms-transform":"rotate("+rotate+"deg)"});
-		  	// $("#bird").css({"-moz-transform":"rotate("+rotate+"deg)"});
-		  	// $("#bird").css({"-o-transform":"rotate("+rotate+"deg)"});
-
-		  	// $("#bird").offset({top:165, left:169});
-	
-
-
-		  
-
-		  	//birdp=move($("#bird"),0,0);
-
-		  	//$("#pointer").offset({top:8+30+(6-birdp.y)*size,left:12+8+30+(birdp.x+8)*size});
 		  	$("#PigWinText").hide();
 		  	$("#PigLoseText").hide();
 		  	$("#BirdWinText").hide();
@@ -214,58 +295,7 @@ $(document).ready(function(){
 	}
 
 
-	function writeBox(){
-		// var canvas = document.getElementById("canvas");
-		// var ctx =canvas.getContext("2d");
-		
-		
-		//alert($("#canvas").width()+","+$("#canvas").height());
-		ctx.beginPath()
-			
-			ctx.moveTo(long ,long);
-			for (var i = 0; i < 24; i++) {
-				var angle = i*15*Math.PI/180;
-				//alert(i+""+angle+":"+Math.sin(angle)+":"+Math.cos(angle));
-				var x =  Math.sin(angle) * long;
-				var y = Math.cos(angle) * long;
-				ctx.moveTo(long,long);//left,top
-				ctx.lineTo(long+x,long-y);
-				ctx.fillText(""+i*15,long+0.9*x,long-y*0.9)
-
-			}
-			
-			//ctx.moveTo(0,0);
-			//ctx.lineTo(400,400);
-			ctx.lineWidth=0.3
-			ctx.stroke();
-		//ctx.stroke();
-
-		// ctx.strokeStyle="#111111"
-		// ctx.lineWidth=0.5
-		
-		// ctx.beginPath();
-
-		// ctx.moveTo(8*size+size,size);
-		// ctx.lineTo(8*size+size,size*13);
-		// ctx.moveTo(size,7*size);
-		// ctx.lineTo(size*17,7*size);
-		// ctx.strokeStyle="blue"
-		// ctx.lineWidth=1
-		// ctx.stroke();
-
-		// ctx.beginPath();
-		// ctx.font="12px Arial";
-		// ctx.fillStyle="red";
-		// for (var i = -8; i <=8 ; i++) {
-		// 	ctx.fillText(""+i,(i+9)*size+2,7*size+12);		
-		// }
-		// for (var i = -6; i <=6 ; i++) {
-		// 	ctx.fillText(""+(0-i),9*size+2,(i+7)*size+12);		
-		// }
-
-		
-		
-	}
+	
 
   
 
