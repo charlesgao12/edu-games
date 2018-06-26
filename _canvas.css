@@ -68,7 +68,7 @@
 	position: absolute;
 	visibility: visible;
 	left: -450px;
-	top: 430px;
+	top: 300px;
 }
 .BirdLose{
 	font-size: 30;
@@ -77,7 +77,7 @@
 	position: absolute;
 	visibility: visible;
 	left: -450px;
-	top: 430px;
+	top: 300px;
 }
 .moveButton{
 	position: absolute;
@@ -110,4 +110,15 @@ transform:          rotate(90deg);
 -moz-transform:     rotate(90deg);
 -webkit-transform:  rotate(90deg);
 -o-transform:       rotate(90deg);
+}
+
+.Title{
+	font-size: 20;
+	font-style: bold;
+	color: red;
+	position: absolute;
+	visibility: visible;
+	left: -500px;
+	top: 20px;
+
 }
