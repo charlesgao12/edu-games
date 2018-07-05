@@ -38,16 +38,63 @@ $(document).ready(function(){
 		'fuzhou':['shanghai','shenzhen'],
 		'shenzhen':['fuzhou']
 	};
+	var start ='shenyang'
 	var searchQueue =  cities.shenyang;
 	var dest = 'qingdao';
-	var searched = ['shenyang'];
+	var searched = [start];
 	var searchedList=new Array();
-	initSearchedList('shenyang');
+	//initSearchedList(start);
 	var lastList = searchedList[0];
 
-	var res = search(dest);
+	var startingTree = {
+		'root':start,
+		'leaves':new Array()
+	};
+	pendingSearch =[
+	startingTree
+	];
+
+
+
+	var res = buildTree(pendingSearch,dest);//search(dest);
 	console.log(res)
-	console.log(searchedList)
+	console.log(startingTree)
+	
+
+	function buildTree(pendingSearch,dest){
+		while(pendingSearch.length>0){
+			startingTree = searchQueue.splice(0,1);
+			children = cities[startingTree.root];
+			for (var i in children) {
+				if(children[i] == dest){
+					newTree = {
+						'root':children[i],
+						'leaves':new Array()	
+					}
+					startingTree.leaves.push(newTree);
+					return true;
+
+				}else if(checkSearched(children[i])){
+					//seems do nth
+
+				}
+				else{
+					newTree = {
+						'root':children[i],
+						'leaves':new Array()	
+					}
+					startingTree.leaves.push(newTree);
+					searched.push(children[i]);
+					pendingSearch.push(newTree);
+
+				}
+			}				
+			
+		}
+		return false;
+
+		
+	}
 
 	
 	function initSearchedList(start){
@@ -88,17 +135,17 @@ $(document).ready(function(){
 						if(!checkSearched(children[i])){
 							searchQueue.push(children[i]);
 
-							for (j in searchedList) {//add the current element to the tracking list
-								var size = searchedList[j].length;
-								if(searchedList[j][size-1] == elements[0]){//check the last element in the list 
-									searchedList[j].push(children[i]);
-
-
-									
-								}
-							}
+							
 						}
 							
+					}
+
+					for (j in searchedList) {//add the current element to the tracking list
+						var size = searchedList[j].length;
+						if(searchedList[j][size-1] == elements[0]){//check the last element in the list
+
+							searchedList[j].push(children[i]);							
+						}
 					}
 										
 					
