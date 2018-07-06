@@ -4,124 +4,70 @@ cities = {
     'harbin': [{'shenyang': 1}],
     'shenyang': [{'harbin':1}, {'dalian':2}, {'qinhuangdao':2}, {'beijing':3}],
     'beijing': [{'shenyang':3}, {'tianjin':1}, {'shijiazhuang':2}],
-    'shijiazhuang': [{'beijing':2}, {'taiyuan':1}, {'jinan':3}],
+    'shijiazhuang': [{'beijing':2}, {'taiyuan':1}, {'jinan':3},{'zhengzhou':4}],
     'taiyuan': [{'shijiazhuang':1}],
     'tianjin': [{'beijing':1}, {'jinan':3}],
     'qinhuangdao': [{'shenyang':3}],
     'qingdao': [{'jinan':1}],
     'dalian': [{'shenyang':2}],
-    'jinan': ['taiyuan', 'tianjin', 'qingdao', 'xuzhou'],
-    'xuzhou': ['jinan', 'nanjing', 'zhengzhou'],
-    'zhengzhou': ['xuzhou', 'taiyuan', 'xian', 'wuhan'],
-    'xian': ['zhengzhou', 'baoji', 'jiangyou'],
-    'baoji': ['xian', 'lanzhou'],
-    'lanzhou': ['baoji', 'xining'],
-    'xining': ['lanzhou'],
-    'jiangyou': ['xian'],
-    'wuhan': ['zhengzhou', 'chongqing', 'hefei', 'changsha'],
-    'chongqing': ['wuhan', 'chengdu'],
-    'chengdu': ['dazhou', 'chongqing'],
-    'dazhou': ['chengdu'],
-    'hefei': ['wuhan', 'nanjing'],
-    'nanjing': ['xuzhou', 'hefei', 'shanghai'],
-    'shanghai': ['nanjing', 'hangzhou', 'fuzhou'],
-    'hangzhou': ['shanghai', 'changsha'],
-    'changsha': ['hangzhou', 'wuhan', 'guiyang', 'guangzhou'],
-    'guiyang': ['changsha', 'kunming'],
-    'kunming': ['guiyang'],
-    'guangzhou': ['changsha'],
-    'fuzhou': ['shanghai', 'shenzhen'],
-    'shenzhen': ['fuzhou']
+    'jinan': [{'shijiazhuang':3}, {'tianjin':2}, {'qingdao':1}, {'xuzhou':1}],
+    'xuzhou': [{'jinan':1}, {'nanjing':1}, {'zhengzhou':3}],
+    'zhengzhou': [{'xuzhou':3}, {'shijiazhuang':4}, {'xian':5}, {'wuhan':2}],
+    'xian': [{'zhengzhou':5}, {'baoji':1}, {'jiangyou':5}],
+    'baoji': [{'xian':1}, {'lanzhou':3}],
+    'lanzhou': [{'baoji':3}, {'xining':2}],
+    'xining': [{'lanzhou':2}],
+    'jiangyou': [{'xian':5}],
+    'wuhan': [{'zhengzhou':2}, {'chongqing':4}, {'hefei':3}, {'changsha':2}],
+    'chongqing': [{'wuhan':4}, {'chengdu':2}],
+    'chengdu': [{'dazhou':4}, {'chongqing':2}],
+    'dazhou': [{'chengdu':4}],
+    'hefei': [{'wuhan':3}, {'nanjing':2}],
+    'nanjing': [{'xuzhou':1}, {'hefei':2}, {'shanghai':2}],
+    'shanghai': [{'nanjing':2}, {'hangzhou':1}, {'fuzhou':4}],
+    'hangzhou': [{'shanghai':1}, {'changsha':4}],
+    'changsha': [{'hangzhou':4}, {'wuhan':2}, {'guiyang':5}, {'guangzhou':3}],
+    'guiyang': [{'changsha':5}, {'kunming':2}],
+    'kunming': [{'guiyang':2}],
+    'guangzhou': [{'changsha':3}],
+    'fuzhou': [{'shanghai':4}, {'shenzhen':5}],
+    'shenzhen': [{'fuzhou':5}]
 }
 
 start = 'harbin'
 
-dest = 'beijing'
+dest = 'jiangyou'
 
-dist={('harbin','beijing'):999999}
-path={('harbin','beijing'):[]}
+dist={('harbin','beijing'):999999,(start,start):0}
+path={('harbin','beijing'):[],(start,start):[start]}
 checked={start:1}
+checklist = deque(cities[start])
+
+
 
 def d():
-    children = cities[start]
-    for i in children:
-        dist[(start,i)]=children[i]
-        path[(start, i)] = [start,i]
-
+    while checklist:
+        dd(list(checklist.popleft())[0])
 
 def dd(checkPoint):
-    children = cities[checkPoint]
+    children = cities[checkPoint] # get checkPoint's children
+    tempdist = 999999
+    tempTarget = None
     for i in children:
-        if i in checked:
+        checking = list(i)[0]
+        if checking in checked:
+            if (dist[(start,checking)]+i[checking]) < tempdist:
+                tempdist = dist[(start,checking)]+i[checking] # find the shorter dist
+                tempTarget = checking
+        else:
+            checklist.append(i)
+    dist[(start, checkPoint)] = tempdist
+    path[(start, checkPoint)] = path[(start,tempTarget)]+[checkPoint]
+    checked[checkPoint]=1
+
+
             
 
-
-
-
-startingTree = {
-    'parent': None,
-    'root': start #,
-    #'leaves': []
-}
-pendingSearch = [
-    startingTree
-]
-searched =[start]
-
-
-#destTree=None
-
-def build_tree(pendingSearch, dest):
-    destTree = None
-    searchlist = deque(pendingSearch)
-    while len(searchlist)>0:
-        searching = searchlist.popleft()
-        children = cities[searching['root']]
-        if dest in children:
-            destTree = {'parent': searching,'root': dest}
-            #searching['leaves'].append(destTree)
-            return True,destTree
-        else:
-            for i in children:
-                if i not in searched:
-                    newTree = {'parent': searching,'root': i}
-                    #searching['leaves'].append(newTree)
-                    searched.append(i)
-                    searchlist.append(newTree)
-
-
-
-    return False,destTree
-
-
-level = 1
-
-
-def printtree(tree,level):
-
-    if len(tree['leaves'])>0:
-        temp =''
-        for i in tree['leaves']:
-            temp = temp+' '+i['root']
-        print(level,temp)
-        for i in tree['leaves']:
-            #level = level+1
-            printtree(i,level+1)
-    else:
-        return
-
-
-
-
-res = build_tree(pendingSearch, dest)
-print(res[0])
-
-def printt(node):
-    print(node['root'])
-    if node['parent'] != None:
-        printt(node['parent'])
-
-printt(res[1])
-#print(destTree)
-#printtree(startingTree,1)
-
+d()
+print(dist[start,dest])
+print(path[start,dest])
