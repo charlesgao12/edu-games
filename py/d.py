@@ -1,15 +1,15 @@
 from collections import deque
 
 cities = {
-    'harbin': ['shenyang'],
-    'shenyang': ['harbin', 'dalian', 'qinhuangdao', 'beijing'],
-    'beijing': ['shenyang', 'tianjin', 'shijiazhuang'],
-    'shijiazhuang': ['beijing', 'taiyuan', 'jinan'],
-    'taiyuan': ['shijiazhuang'],
-    'tianjin': ['beijing', 'jinan'],
-    'qinhuangdao': ['shenyang'],
-    'qingdao': ['jinan'],
-    'dalian': ['shenyang'],
+    'harbin': [{'shenyang': 1}],
+    'shenyang': [{'harbin':1}, {'dalian':2}, {'qinhuangdao':2}, {'beijing':3}],
+    'beijing': [{'shenyang':3}, {'tianjin':1}, {'shijiazhuang':2}],
+    'shijiazhuang': [{'beijing':2}, {'taiyuan':1}, {'jinan':3}],
+    'taiyuan': [{'shijiazhuang':1}],
+    'tianjin': [{'beijing':1}, {'jinan':3}],
+    'qinhuangdao': [{'shenyang':3}],
+    'qingdao': [{'jinan':1}],
+    'dalian': [{'shenyang':2}],
     'jinan': ['taiyuan', 'tianjin', 'qingdao', 'xuzhou'],
     'xuzhou': ['jinan', 'nanjing', 'zhengzhou'],
     'zhengzhou': ['xuzhou', 'taiyuan', 'xian', 'wuhan'],
@@ -34,9 +34,29 @@ cities = {
     'shenzhen': ['fuzhou']
 }
 
-start = 'hangzhou'
+start = 'harbin'
 
-dest = 'wuhan'
+dest = 'beijing'
+
+dist={('harbin','beijing'):999999}
+path={('harbin','beijing'):[]}
+checked={start:1}
+
+def d():
+    children = cities[start]
+    for i in children:
+        dist[(start,i)]=children[i]
+        path[(start, i)] = [start,i]
+
+
+def dd(checkPoint):
+    children = cities[checkPoint]
+    for i in children:
+        if i in checked:
+            
+
+
+
 
 startingTree = {
     'parent': None,
