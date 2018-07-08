@@ -34,7 +34,7 @@ cities = {
     'shenzhen': [('fuzhou',5),('guangzhou',2)]
 }
 
-start = 'shanghai'
+start = 'nanjing'
 dest = 'shenzhen'
 
 class Tree:

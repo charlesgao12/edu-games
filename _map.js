@@ -16,36 +16,36 @@ $(document).ready(function(){
 
 	var cities = {
 		'harbin':[434,40],
-		'shenyang':['harbin','dalian','qinhuangdao','beijing'],
+		'shenyang':[416,128],
 		'beijing':[304,178],
-		'shijiazhuang': ['beijing','taiyuan','jinan'],
-		'taiyuan': ['shijiazhuang'],
-		'tianjin':['beijing','jinan'],
-		'qinhuangdao':['shenyang'],
-		'qingdao':['jinan'],
-		'dalian':['shenyang'],
-		'jinan':['taiyuan','tianjin','qingdao','xuzhou'],
-		'xuzhou':['jinan','nanjing','zhengzhou'],
-		'zhengzhou':['xuzhou','taiyuan','xian','wuhan'],
-		'xian':['zhengzhou','baoji','jiangyou'],
-		'baoji':['xian','lanzhou'],
-		'lanzhou':['baoji','xining'],
-		'xining':['lanzhou'],
-		'jiangyou':['xian'],
-		'wuhan':['zhengzhou','chongqing','hefei','changsha'],
-		'chongqing':['wuhan','chengdu'],
-		'chengdu':['dazhou','chongqing'],
-		'dazhou':['chengdu'],
-		'hefei':['wuhan','nanjing'],
-		'nanjing':['xuzhou','hefei','shanghai'],
-		'shanghai':['nanjing','hangzhou','fuzhou'],
-		'hangzhou':['shanghai','changsha'],
-		'changsha':['hangzhou','wuhan','guiyang','guangzhou'],
-		'guiyang':['changsha','kunming'],
-		'kunming':['guiyang'],
-		'guangzhou':['changsha'],
-		'fuzhou':['shanghai','shenzhen'],
-		'shenzhen':['fuzhou']
+		'shijiazhuang': [276,226],
+		'taiyuan': [244,230],
+		'tianjin':[324,198],
+		'qinhuangdao':[356,181],
+		'qingdao':[377,246],
+		'dalian':[396,193],
+		'jinan':[321,262],
+		'xuzhou':[341,298],
+		'zhengzhou':[268,296],
+		'xian':[168,314],
+		'baoji':[142,308],
+		'lanzhou':[82,280],
+		'xining':[34,261],
+		'jiangyou':[100,358],
+		'wuhan':[286,382],
+		'chongqing':[146,398],
+		'chengdu':[76,372],
+		'dazhou':[165,365],
+		'hefei':[341,358],
+		'nanjing':[374,332],
+		'shanghai':[426,346],
+		'hangzhou':[406,381],
+		'changsha':[268,424],
+		'guiyang':[109,457],
+		'kunming':[24,505],
+		'guangzhou':[256,532],
+		'fuzhou':[389,449],
+		'shenzhen':[293,542]
 	};
 
 	function moveTrain(city){
@@ -60,7 +60,7 @@ $(document).ready(function(){
 		var map = document.getElementById("map")
 		var train = document.getElementById("train")
 		ctx.drawImage(map,0,0);
-		moveTrain('beijing')
+		//moveTrain('xining')
 		
 		
 
