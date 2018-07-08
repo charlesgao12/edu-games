@@ -35,47 +35,47 @@ cities = {
 }
 
 start = 'shanghai'
+dest = 'shenzhen'
 
-dest = 'chongqing'
+class dij:
+    dist = {(start, start): 0}
+    path = {(start, start): [start]}
+    checked = {start: 1}
+    checklist = deque(cities[start])
 
-dist={('harbin','beijing'):999999,(start,start):0}
-path={('harbin','beijing'):[],(start,start):[start]}
-checked={start:1}
-checklist = deque(cities[start])
+    def dij(self):
+        while self.checklist:
+            self.dd(self.checklist.popleft()[0])
+
+        print(self.dist[start,dest])
+        print(self.path[start, dest])
+
+    def dd(self,checkPoint):
+        children = cities[checkPoint]  # get checkPoint's children
+        tempdist = 999999
+        tempTarget = None  # the checked point that has the shortest path to checkPoint
+        checked_of_mine = {}
+        for i in children:
+            checking = i[0]
+            if checking in self.checked:
+                checked_of_mine[checking] = i[1]
+                if (self.dist[(start, checking)] + i[1]) < tempdist:
+                    tempdist = self.dist[(start, checking)] + i[1]  # find the shorter dist
+                    tempTarget = checking
+            else:
+                self.checklist.append(i)
+        self.dist[(start, checkPoint)] = tempdist
+        self.path[(start, checkPoint)] = self.path[(start, tempTarget)] + [checkPoint]
+        self.checked[checkPoint] = 1
+        # recheck the checked points to see if any shorter path
+        del checked_of_mine[tempTarget]  # remove the one that in the path to checkPoint
+        for i in checked_of_mine:
+            if self.dist[(start, checkPoint)] + checked_of_mine[i] < self.dist[(start, i)]:
+                self.dist[(start, i)] = self.dist[(start, checkPoint)] + checked_of_mine[i]
+                self.path[(start, i)] = self.path[(start, checkPoint)] + [i]
+
+
+dij().dij()
 
 
 
-def d():
-    while checklist:
-        dd(checklist.popleft()[0])
-
-def dd(checkPoint):
-    children = cities[checkPoint] # get checkPoint's children
-    tempdist = 999999
-    tempTarget = None # the checked point that has the shortest path to checkPoint
-    checked_of_mine={}
-    for i in children:
-        checking = i[0]
-        if checking in checked:
-            checked_of_mine[checking]=i[1]
-            if (dist[(start,checking)]+i[1]) < tempdist:
-                tempdist = dist[(start,checking)]+i[1] # find the shorter dist
-                tempTarget = checking
-        else:
-            checklist.append(i)
-    dist[(start, checkPoint)] = tempdist
-    path[(start, checkPoint)] = path[(start,tempTarget)]+[checkPoint]
-    checked[checkPoint]=1
-    #recheck the checked points to see if any shorter path
-    del checked_of_mine[tempTarget] # remove the one that in the path to checkPoint
-    for i in checked_of_mine:
-        if dist[(start, checkPoint)] + checked_of_mine[i] < dist[(start,i)]:
-            dist[(start, i)] =dist[(start, checkPoint)] + checked_of_mine[i]
-            path[(start, i)] =path[(start,checkPoint)]+[i]
-
-
-            
-
-d()
-print(dist[start,dest])
-print(path[start,dest])
