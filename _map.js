@@ -1,4 +1,13 @@
 
+function coordinate(e){
+
+
+	x=e.clientX-8;
+	y=e.clientY-8;
+	document.getElementById("xycoordinates").innerHTML="Coordinates: (" + x + "," + y + ")";
+
+}
+
 $(document).ready(function(){
 	$("#PigWinText").hide();
 	$("#PigLoseText").hide();
@@ -6,9 +15,9 @@ $(document).ready(function(){
 	$("#BirdLoseText").hide();
 
 	var cities = {
-		'harbin':['shenyang'],
+		'harbin':[434,40],
 		'shenyang':['harbin','dalian','qinhuangdao','beijing'],
-		'beijing':['shenyang','tianjin','shijiazhuang'],
+		'beijing':[304,178],
 		'shijiazhuang': ['beijing','taiyuan','jinan'],
 		'taiyuan': ['shijiazhuang'],
 		'tianjin':['beijing','jinan'],
@@ -38,127 +47,23 @@ $(document).ready(function(){
 		'fuzhou':['shanghai','shenzhen'],
 		'shenzhen':['fuzhou']
 	};
-	var start ='shenyang'
-	var searchQueue =  cities.shenyang;
-	var dest = 'qingdao';
-	var searched = [start];
-	var searchedList=new Array();
-	//initSearchedList(start);
-	var lastList = searchedList[0];
 
-	var startingTree = {
-		'root':start,
-		'leaves':new Array()
-	};
-	pendingSearch =[
-	startingTree
-	];
-
-
-
-	var res = buildTree(pendingSearch,dest);//search(dest);
-	console.log(res)
-	console.log(startingTree)
+	function moveTrain(city){
+		ctx.drawImage(train,cities[city][0]-15,cities[city][1]-15,30,30)
+	}
 	
 
-	function buildTree(pendingSearch,dest){
-		while(pendingSearch.length>0){
-			startingTree = searchQueue.splice(0,1);
-			children = cities[startingTree.root];
-			for (var i in children) {
-				if(children[i] == dest){
-					newTree = {
-						'root':children[i],
-						'leaves':new Array()	
-					}
-					startingTree.leaves.push(newTree);
-					return true;
 
-				}else if(checkSearched(children[i])){
-					//seems do nth
-
-				}
-				else{
-					newTree = {
-						'root':children[i],
-						'leaves':new Array()	
-					}
-					startingTree.leaves.push(newTree);
-					searched.push(children[i]);
-					pendingSearch.push(newTree);
-
-				}
-			}				
-			
-		}
-		return false;
-
+		//alert('h')
+		var canvas=document.getElementById("canvas");
+		var ctx=canvas.getContext("2d");
+		var map = document.getElementById("map")
+		var train = document.getElementById("train")
+		ctx.drawImage(map,0,0);
+		moveTrain('beijing')
 		
-	}
+		
 
-	
-	function initSearchedList(start){
-		searchedList=new Array();
-		var children = cities[start];
-		for ( i in children){
-			var ele = new Array();
-			ele.push(start);
-			ele.push(children[i])
-			
-			searchedList.push(ele);
-		}
-	}
-
-
-	function checkSearched(ele){
-		for (var i in searched) {
-			if(ele == searched[i]){
-				return true;
-			}
-		}
-		return false;
-	}
-	function search(dest){
-		while(searchQueue.length > 0){
-			elements = searchQueue.splice(0,1);
-			//console.log(elements)
-			if(checkSearched(elements[0])){
-				//do nth
-			}else{
-				if(elements[0] == dest){
-					console.log("found:"+dest)
-					return true;
-				}else{
-					searched.push(elements[0]);			
-					var children = cities[elements[0]];
-					for (i in children){
-						if(!checkSearched(children[i])){
-							searchQueue.push(children[i]);
-
-							
-						}
-							
-					}
-
-					for (j in searchedList) {//add the current element to the tracking list
-						var size = searchedList[j].length;
-						if(searchedList[j][size-1] == elements[0]){//check the last element in the list
-
-							searchedList[j].push(children[i]);							
-						}
-					}
-										
-					
-						
-
-				}
-
-			}
-
-			
-		}	
-		return false;
-	}
 	
 
 

@@ -37,7 +37,66 @@ cities = {
 start = 'shanghai'
 dest = 'shenzhen'
 
-class dij:
+class Tree:
+
+
+
+    # destTree=None
+
+    def build_tree(self):
+        startingTree = {
+            'parent': None,
+            'root': start  # ,
+            # 'leaves': []
+        }
+        pendingSearch = [
+            startingTree
+        ]
+        searched = [start]
+
+        #destTree = None
+        searchlist = deque(pendingSearch)
+        while len(searchlist) > 0:
+            searching = searchlist.popleft()
+            children = cities[searching['root']]
+
+            for i in children:
+                if dest == i[0]:
+                    destTree = {'parent': searching, 'root': dest}
+                    # searching['leaves'].append(destTree)
+                    return True, self.getPath(destTree)
+                elif i[0] not in searched:
+                    newTree = {'parent': searching, 'root': i[0]}
+                    # searching['leaves'].append(newTree)
+                    searched.append(i[0])
+                    searchlist.append(newTree)
+
+            '''if dest in children:
+                destTree = {'parent': searching, 'root': dest}
+                # searching['leaves'].append(destTree)
+                return True, destTree
+            else:
+                for i in children:
+                    if i not in searched:
+                        newTree = {'parent': searching, 'root': i}
+                        # searching['leaves'].append(newTree)
+                        searched.append(i)
+                        searchlist.append(newTree)
+            '''
+
+        return False, None
+
+    #res = build_tree()
+    #print(res[0])
+
+    def getPath(self,node):
+        path=[]
+        while node != None:
+            path.insert(0,node['root'])
+            node = node['parent']
+        return path
+
+class Dij:
     dist = {(start, start): 0}
     path = {(start, start): [start]}
     checked = {start: 1}
@@ -75,7 +134,12 @@ class dij:
                 self.path[(start, i)] = self.path[(start, checkPoint)] + [i]
 
 
-dij().dij()
+Dij().dij()
+t=Tree()
+res=t.build_tree()
+print(res[1])
+
+
 
 
 

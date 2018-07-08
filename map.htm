@@ -1,6 +1,6 @@
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="_canvas.css">
+	<link rel="stylesheet" type="text/css" href="_map.css">
 	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="blockly-master/blockly-master/blockly_compressed.js"></script>
 	<script type="text/javascript" src="blockly-master/blockly-master/blocks_compressed.js"></script>
@@ -13,10 +13,11 @@
 </head>
 <body>
 	
-	<canvas id="canvas" class="canvas" 	width="480" height="360"></canvas>
+	<canvas id="canvas" class="canvas" 	width="500" height="600" onmousemove="coordinate(event)"></canvas>
 	
 	
-	<img id="pencil" src="pencil.png" style="visibility: hidden">
+	<img id="train" src="map/train.png" style="visibility: hidden">
+	<img id="map" src="map/map.png" style="visibility: hidden">
 	<div id="blocklyDiv" class="Blockly">
 	<xml id="toolbox" style="display: none">
 		<block type="faceDirection" ></block>	
@@ -26,14 +27,16 @@
 		
 		
 	</xml>
+
+	
 	<textarea id="codes" class="Codesarea"></textarea>
 	<button id="move" class="moveButton">Answer</button>
 	<button id="reset" class="resetButton">New game</button>
-	<div id="Title" class="Title">Please draw the following regular polygon:</div>
 	<div id="PigWinText" class="PigWin">Pig's coordinate is correct!</div>
 	<div id="PigLoseText" class="PigLose">Pig's coordinate is wrong!</div>
 	<div id="BirdWinText" class="BirdWin">Your answer is correct!</div>
 	<div id="BirdLoseText" class="BirdLose">Your answer is wrong!</div>
+	<div id="xycoordinates">x:</div>
 
 
 
