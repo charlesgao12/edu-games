@@ -293,3 +293,73 @@ var turnPen = {
 
   "colour":120   
 }
+
+var mapp = {
+  "type": "mapp",
+  "message0": "From %1",
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "from",
+      "options": [
+        [ "Harbin", "Harbin" ],
+        [ "Shenyang", "Shenyang" ]        
+      ]
+    }
+  ],
+  "message1": "through %1",
+  "args1": [
+    {"type": "input_statement", "name": "through"}
+  ],
+  "message2": "to %1",
+  "args2": [
+    {
+      "type": "field_dropdown",
+      "name": "to",
+      "options": [
+        [ "Harbin", "Harbin" ],
+        [ "Shenyang", "Shenyang" ]        
+      ]
+    }
+  ],
+
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 120
+}
+
+var cityField ={
+  "type": "cityField",
+  "message0": "%1",
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "city",
+      "options": [
+        [ "Harbin", "Harbin" ],
+        [ "Shenyang", "Shenyang" ]
+      ]
+    }
+  ],
+  "output": null,
+  "colour": 170
+}
+
+var city ={
+  "type": "city",
+  "message0": "%1",
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "city",
+      "options": [
+        [ "Harbin", "Harbin" ],
+        [ "Shenyang", "Shenyang" ]
+      ]
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  
+  "colour": 50
+}

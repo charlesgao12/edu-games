@@ -47,6 +47,21 @@ Blockly.JavaScript['moveTot']=function(block){
 	return "moveTo("+x+","+y+");";
 };
 
-
+Blockly.JavaScript['mapp']=function(block){
+	var from = block.getFieldValue('from');
+	var through = Blockly.JavaScript.statementToCode(block, 'through');
+	var to = block.getFieldValue('to');
+	return "move(\""+from+"\",\""+through+"\",\""+to+"\");";
+};
+Blockly.JavaScript['city']=function(block){
+	var x = block.getFieldValue('city');
+	// var y = block.getFieldValue('y');
+	return x+"|";
+};
+Blockly.JavaScript['cityField']=function(block){
+	var x = block.getFieldValue('city');
+	// var y = block.getFieldValue('y');
+	return x;
+};
 
 

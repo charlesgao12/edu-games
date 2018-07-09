@@ -23,7 +23,7 @@
 
 
 .Blockly{
-	height: 400px;
+	height: 550px;
 	width: 500px;
 	left: 550px;
 	top: 8px;
@@ -81,14 +81,14 @@
 }
 .moveButton{
 	position: absolute;
-	left: 350px;
-	top: 420px;
+	left: 420px;
+	top: 555px;
 
 }
 .resetButton{
 	position: absolute;
-	left: 250px;
-	top: 420px;
+	left: 300px;
+	top: 555px;
 }
 .pointer{
 	background:#FF0303;

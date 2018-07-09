@@ -48,9 +48,49 @@ $(document).ready(function(){
 		'shenzhen':[293,542]
 	};
 
+	
+
+	var movingList =[]
+
+	function move(from, through,to){
+		movingList =[]
+		movingList.push(from)
+		var thrus = through.split("|")
+		for (var i in thrus) {
+			if(thrus[i].trim() != ""){
+				movingList.push(thrus[i].trim().toLowerCase());
+			}
+		}
+		movingList.push(to);
+	}
+
 	function moveTrain(city){
 		ctx.drawImage(train,cities[city][0]-15,cities[city][1]-15,30,30)
 	}
+
+	function trainTo(city){
+
+	}
+
+
+	Blockly.Blocks['mapp']={
+		init: function(){
+			this.jsonInit(mapp);  		
+		}
+	};
+	Blockly.Blocks['city']={
+		init: function(){
+			this.jsonInit(city);  		
+		}
+	};
+	Blockly.Blocks['cityField']={
+		init: function(){
+			this.jsonInit(cityField);  		
+		}
+	};
+	
+
+	var workspace =Blockly.inject('blocklyDiv',{toolbox:document.getElementById('toolbox')});
 	
 
 
@@ -59,7 +99,7 @@ $(document).ready(function(){
 		var ctx=canvas.getContext("2d");
 		var map = document.getElementById("map")
 		var train = document.getElementById("train")
-		ctx.drawImage(map,0,0);
+		
 		//moveTrain('xining')
 		
 		
@@ -96,9 +136,9 @@ $(document).ready(function(){
 
 
 
-	function draw(actions){
-		actionList = actions;
-		dotList=[{x:pencilPosition.x,y:pencilPosition.y}];
+	function draw(){
+		// actionList = actions;
+		//dotList=[{x:pencilPosition.x,y:pencilPosition.y}];
 		setTimeout(animation,500);
 
 	}
@@ -110,11 +150,11 @@ $(document).ready(function(){
 
 
 	function animation(){
-		if(actionList.length >0){
-			action = actionList[0];
+		if(movingList.length >0){
+			action = movingList[0];
 			actionList.splice(0,1);
 			window.requestAnimationFrame(function(){
-				pencilMove(action,animation)	
+				trainMove(action,animation)	
 			});
 			
 
@@ -168,41 +208,8 @@ $(document).ready(function(){
 	
 
 
-	//$("#blocklyDiv").offset({top:0,left:550})
-	//$("#codes").offset({top:500,left:8});
-	Blockly.Blocks['faceDirection']={
-		init: function(){
-
-			this.jsonInit(faceDirection);  	
-			// this.setOnChange(function(changeEvent) {
-			//       if (this.getInput('NUM').connection.targetBlock()) {
-			//         this.setWarningText(null);
-			//       } else {
-			//         this.setWarningText('Must have an input block.');
-			//       }
-			//     });
-
-
-		}
-
-	};
-	Blockly.Blocks['turnPen']={
-		init: function(){
-			this.jsonInit(turnPen);  		
-		}
-	};
-	Blockly.FieldAngle.CLOCKWISE=true;
-	Blockly.FieldAngle.OFFSET=90;
-
-	Blockly.Blocks['movePencil']={
-		init: function(){
-			this.jsonInit(movePencil);  		
-		}
-	};
 	
 	
-
-	var workspace =Blockly.inject('blocklyDiv',{toolbox:document.getElementById('toolbox')});
 
 	function moveTo(x,y){//this function is to be called by blockly, as the blockly coordiates are different from canvas'
 		x = x+ canvas.width/2;
@@ -248,7 +255,7 @@ $(document).ready(function(){
 	
 
 
-	function pencilMove(action,callback){
+	function trainMove(action,callback){
 		console.log("clear");
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 		initBox();
@@ -324,9 +331,9 @@ $(document).ready(function(){
 		//var xml = Blockly.Xml.workspaceToDom(workspace);
 		//var xml_text = Blockly.Xml.domToText(xml);
 		//$("#codes").text(xml_text);
-		actionList=new Array();
+		//actionList=new Array();
 		eval(code);
-		draw(actionList);
+		draw();
 
 
 
@@ -351,6 +358,8 @@ $(document).ready(function(){
 
 
 	function initBox(){
+		ctx.drawImage(map,0,0);
+		
 		ctx.beginPath();
 		ctx.moveTo(points[0].x,points[0].y);
 		for (var i = 1; i < points.length; i++) {

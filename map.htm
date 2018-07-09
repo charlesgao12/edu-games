@@ -13,18 +13,18 @@
 </head>
 <body>
 	
-	<canvas id="canvas" class="canvas" 	width="500" height="600" onmousemove="coordinate(event)"></canvas>
+	<canvas id="canvas" class="canvas" 	width="500" height="600" ></canvas>
+	<!--onmousemove="coordinate(event)" -->
 	
 	
 	<img id="train" src="map/train.png" style="visibility: hidden">
 	<img id="map" src="map/map.png" style="visibility: hidden">
-	<!--
+	
 	<div id="blocklyDiv" class="Blockly">
 	<xml id="toolbox" style="display: none">
-		<block type="faceDirection" ></block>	
-		<block type="turnPen" ></block>		
-		<block type="movePencil" ></block>
-		<block type="controls_repeat"></block>
+		<block type="mapp" ></block>
+		<block type="city" ></block>	
+		<block type="cityField" ></block>	
 		
 		
 	</xml>
@@ -36,8 +36,8 @@
 	<div id="PigWinText" class="PigWin">Pig's coordinate is correct!</div>
 	<div id="PigLoseText" class="PigLose">Pig's coordinate is wrong!</div>
 	<div id="BirdWinText" class="BirdWin">Your answer is correct!</div>
-	<div id="BirdLoseText" class="BirdLose">Your answer is wrong!</div>-->
-	<div id="xycoordinates">x:</div>
+	<div id="BirdLoseText" class="BirdLose">Your answer is wrong!</div>
+	<!--<div id="xycoordinates"></div>-->
 
 
 
