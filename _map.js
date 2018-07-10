@@ -50,109 +50,50 @@ $(document).ready(function(){
 
 	
 
-	var movingList =[]
+	var movingList =[]//to store the city list of the path input from blockly
+	var dotList=new Array();// to store the already moved path in the draw flow
 
 	function move(from, through,to){
 		movingList =[]
-		movingList.push(from)
+		movingList.push(from.toLowerCase())
 		var thrus = through.split("|")
 		for (var i in thrus) {
 			if(thrus[i].trim() != ""){
 				movingList.push(thrus[i].trim().toLowerCase());
 			}
 		}
-		movingList.push(to);
+		movingList.push(to.toLowerCase());
+		console.log(movingList)
 	}
 
-	function moveTrain(city){
-		ctx.drawImage(train,cities[city][0]-15,cities[city][1]-15,30,30)
+	function getCityCoor(city){
+		var xx = cities[city][0]-15;
+		var yy = cities[city][1]-15;
+		return {x:xx,y:yy}
 	}
-
-	function trainTo(city){
-
-	}
-
-
-	Blockly.Blocks['mapp']={
-		init: function(){
-			this.jsonInit(mapp);  		
-		}
-	};
-	Blockly.Blocks['city']={
-		init: function(){
-			this.jsonInit(city);  		
-		}
-	};
-	Blockly.Blocks['cityField']={
-		init: function(){
-			this.jsonInit(cityField);  		
-		}
-	};
-	
-
-	var workspace =Blockly.inject('blocklyDiv',{toolbox:document.getElementById('toolbox')});
-	
-
-
-		//alert('h')
-		var canvas=document.getElementById("canvas");
-		var ctx=canvas.getContext("2d");
-		var map = document.getElementById("map")
-		var train = document.getElementById("train")
-		
-		//moveTrain('xining')
-		
-		
-
-	
-
-
-	
-	//alert(points.length)
-
-	
-
-	function getPoints(){
-		var points = new Array();
-		points.push({x:canvas.width/2,y:canvas.height/2});//start
-		line = 80;
-		x=canvas.width/2;
-		y=canvas.height/2-80;
-		points.push({x:x,y:y});
-		for(i=1;i<size-1;i++){
-			x=x-line*Math.sin(i*360*Math.PI/180/size);
-			y=y-line*Math.cos(i*360*Math.PI/180/size);
-			points.push({x:x,y:y});			
-		}
-		points.push({x:canvas.width/2,y:canvas.height/2});//end, to push the start point again
-		//alert(points.length);
-		return points;
-
-	}
-
-	//reset();
-	
-	//draw(actionList)
-
-
 
 	function draw(){
 		// actionList = actions;
-		//dotList=[{x:pencilPosition.x,y:pencilPosition.y}];
-		setTimeout(animation,500);
+		dotList=[getCityCoor(popleft(movingList))];//pop the first city and store to dotList as starting point
+		setTimeout(animation,500);//delay to start animation
 
 	}
 
-	function matching(pointA, pointB){
-		var res = (Math.abs(pointA.x-pointB.x) < 1) && (Math.abs(pointA.y-pointB.y) < 1);
-		return res;
+	function popleft(list){// remove and return the first element in list
+		var res=undefined;
+		if(movingList.length >0){
+			res = list[0]
+			list.splice(0,1)
+
+
+		}
+		return res
 	}
 
-
+	//the animation function to draw on canvas, also work as callback
 	function animation(){
 		if(movingList.length >0){
-			action = movingList[0];
-			actionList.splice(0,1);
+			action = popleft(movingList)
 			window.requestAnimationFrame(function(){
 				trainMove(action,animation)	
 			});
@@ -200,6 +141,134 @@ $(document).ready(function(){
 
 		
 	}
+
+	function trainMove(action,callback){
+		console.log("clear");
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+		initBox();
+		ctx.beginPath();
+		
+		
+		dotList.push({x:action.x,y:action.y});//todo
+
+		//ctx.beginPath()
+
+		var start = dotList[0];
+
+		ctx.moveTo(start.x,start.y);
+		console.log("move to:"+start.x+" "+start.y);
+
+		for (var i = 1; i < dotList.length; i++) {
+			console.log("line to:"+dotList[i].x+" "+dotList[i].y);
+			ctx.lineTo(dotList[i].x,dotList[i].y);
+		}
+
+		
+		//ctx.strokeStyle=action.style;
+		ctx.lineWidth=3;
+		console.log("stroke");
+		ctx.stroke();
+		
+		
+		trainMoveTo(action.x,action.y)
+
+		//alert(action.style);	
+
+		
+		// window.requestAnimationFrame(callback);		
+		setTimeout(callback,500);
+
+	}
+
+	function trainMoveTo(x,y){//if x,y = 0,0, position.x ,y = 240,180
+		// trainPosition.x=x;
+		// trainPosition.y=y;		
+		trainPosition.x=x;
+		trainPosition.y=y;
+		
+		
+		ctx.drawImage(train, x,y,30,30);
+		//ctx.moveTo(x,y);
+		//ctx.beginPath();
+	}
+
+	function moveTrain(city){
+		ctx.drawImage(train,cities[city][0]-15,cities[city][1]-15,30,30)
+	}
+
+	function trainTo(city){
+
+	}
+
+
+	Blockly.Blocks['mapp']={
+		init: function(){
+			this.jsonInit(mapp);  		
+		}
+	};
+	Blockly.Blocks['city']={
+		init: function(){
+			this.jsonInit(city);  		
+		}
+	};
+	
+	
+
+	var workspace =Blockly.inject('blocklyDiv',{toolbox:document.getElementById('toolbox')});
+	
+
+
+		//alert('h')
+		var canvas=document.getElementById("canvas");
+		var ctx=canvas.getContext("2d");
+		var map = document.getElementById("map")
+		var train = document.getElementById("train")
+		
+		//moveTrain('xining')
+		
+		initBox()
+		
+
+	
+
+
+	
+	//alert(points.length)
+
+	
+
+	function getPoints(){
+		var points = new Array();
+		points.push({x:canvas.width/2,y:canvas.height/2});//start
+		line = 80;
+		x=canvas.width/2;
+		y=canvas.height/2-80;
+		points.push({x:x,y:y});
+		for(i=1;i<size-1;i++){
+			x=x-line*Math.sin(i*360*Math.PI/180/size);
+			y=y-line*Math.cos(i*360*Math.PI/180/size);
+			points.push({x:x,y:y});			
+		}
+		points.push({x:canvas.width/2,y:canvas.height/2});//end, to push the start point again
+		//alert(points.length);
+		return points;
+
+	}
+
+	//reset();
+	
+	//draw(actionList)
+
+
+
+	
+
+	function matching(pointA, pointB){
+		var res = (Math.abs(pointA.x-pointB.x) < 1) && (Math.abs(pointA.y-pointB.y) < 1);
+		return res;
+	}
+
+
 	
 	
 
@@ -218,17 +287,7 @@ $(document).ready(function(){
 	}
 
 
-	function pencilMoveTo(x,y){//if x,y = 0,0, position.x ,y = 240,180
-		// pencilPosition.x=x;
-		// pencilPosition.y=y;		
-		pencilPosition.x=x;
-		pencilPosition.y=y;
-		
-		
-		ctx.drawImage(pencil, x,y,40,40);
-		//ctx.moveTo(x,y);
-		//ctx.beginPath();
-	}
+	
 
 	function setStrokeStyle(style){
 		strokeStyle = style;
@@ -255,58 +314,14 @@ $(document).ready(function(){
 	
 
 
-	function trainMove(action,callback){
-		console.log("clear");
-		ctx.clearRect(0,0,canvas.width,canvas.height);
-		initBox();
-		ctx.beginPath();
-		//alert(angle+":"+steps);
-		pencilAngle = action.angle;
-		x = action.steps*Math.sin(pencilAngle*Math.PI/180)
-		y = action.steps*Math.cos(pencilAngle*Math.PI/180)
-		
-		dotList.push({x:pencilPosition.x+x,y:pencilPosition.y-y});
-
-		//ctx.beginPath()
-
-		var start = dotList[0];
-
-		ctx.moveTo(start.x,start.y);
-		console.log("move to:"+start.x+" "+start.y);
-
-		for (var i = 1; i < dotList.length; i++) {
-			console.log("line to:"+dotList[i].x+" "+dotList[i].y);
-			ctx.lineTo(dotList[i].x,dotList[i].y);
-		}
-
-		
-		ctx.strokeStyle=action.style;
-		ctx.lineWidth=3;
-		console.log("stroke");
-		ctx.stroke();
-		
-		
-		pencilMoveTo(pencilPosition.x+x,pencilPosition.y-y)
-
-		//alert(action.style);
-		
-
-
-
-		
-
-		
-		// window.requestAnimationFrame(callback);		
-		setTimeout(callback,500);
-
-	}
+	
 
 	
 
 	
-	// var initCode = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"pigCoordinate\" id=\"0d*Rl~?nq`@?F9N;`]q)\" x=\"22\" y=\"26\"><field name=\"X\">-1</field><field name=\"Y\">-1</field></block><block type=\"birdCoordinate\" id=\"3VM=57[@eiZ~48y#|_[R\" x=\"21\" y=\"121\"><field name=\"X\">-1</field><field name=\"Y\">-1</field></block></xml>";
-	// var xml = Blockly.Xml.textToDom(initCode);
-	// Blockly.Xml.domToWorkspace(xml, workspace);
+	var initCode = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"mapp\" id=\"#NnX$U2J1|cTX)vdm=^*\" x=\"76\" y=\"116\"><field name=\"from\">Harbin</field><field name=\"to\">Dalian</field><statement name=\"through\"><block type=\"city\" id=\"iMyP#7`U_[!-nExu8r-t\"><field name=\"city\">Shenyang</field></block></statement></block></xml>";
+	var xml = Blockly.Xml.textToDom(initCode);
+	Blockly.Xml.domToWorkspace(xml, workspace);
 	//end of startting
 
 
@@ -348,7 +363,10 @@ $(document).ready(function(){
 
 	//$("button#reset").offset({top:450,left:100});
 	$("button#reset").click(function(){
-		reset();
+		// reset();
+		var xml = Blockly.Xml.workspaceToDom(workspace);
+		var xml_text = Blockly.Xml.domToText(xml);
+		$("#codes").text(xml_text);
 	});
 
 	
@@ -360,15 +378,15 @@ $(document).ready(function(){
 	function initBox(){
 		ctx.drawImage(map,0,0);
 		
-		ctx.beginPath();
-		ctx.moveTo(points[0].x,points[0].y);
-		for (var i = 1; i < points.length; i++) {
-			ctx.lineTo(points[i].x,points[i].y);
-		}
+		// ctx.beginPath();
+		// ctx.moveTo(points[0].x,points[0].y);
+		// for (var i = 1; i < points.length; i++) {
+		// 	ctx.lineTo(points[i].x,points[i].y);
+		// }
 		
-		ctx.strokeStyle="red";
-		ctx.lineWidth=1;
-		ctx.stroke();
+		// ctx.strokeStyle="red";
+		// ctx.lineWidth=1;
+		// ctx.stroke();
 		
 
 		
@@ -387,7 +405,7 @@ $(document).ready(function(){
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 			
 		pencilAngle = 0;
-		pencilPosition ={x:0,y:0};
+		trainPosition ={x:0,y:0};
 		actionList = new Array();
 		strokeStyle = '#000000';
 		moveTo(0,0);

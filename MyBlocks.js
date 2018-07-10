@@ -303,7 +303,8 @@ var mapp = {
       "name": "from",
       "options": [
         [ "Harbin", "Harbin" ],
-        [ "Shenyang", "Shenyang" ]        
+        [ "Shenyang", "Shenyang" ],
+        [ "Dalian", "Dalian" ]
       ]
     }
   ],
@@ -318,7 +319,8 @@ var mapp = {
       "name": "to",
       "options": [
         [ "Harbin", "Harbin" ],
-        [ "Shenyang", "Shenyang" ]        
+        [ "Shenyang", "Shenyang" ],
+        [ "Dalian", "Dalian" ]      
       ]
     }
   ],
@@ -326,6 +328,28 @@ var mapp = {
   "previousStatement": null,
   "nextStatement": null,
   "colour": 120
+}
+
+
+
+var city ={
+  "type": "city",
+  "message0": "%1",
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "city",
+      "options": [
+        [ "Harbin", "Harbin" ],
+        [ "Shenyang", "Shenyang" ],
+        [ "Dalian", "Dalian" ]
+      ]
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  
+  "colour": 50
 }
 
 var cityField ={
@@ -343,23 +367,4 @@ var cityField ={
   ],
   "output": null,
   "colour": 170
-}
-
-var city ={
-  "type": "city",
-  "message0": "%1",
-  "args0": [
-    {
-      "type": "field_dropdown",
-      "name": "city",
-      "options": [
-        [ "Harbin", "Harbin" ],
-        [ "Shenyang", "Shenyang" ]
-      ]
-    }
-  ],
-  "previousStatement": null,
-  "nextStatement": null,
-  
-  "colour": 50
 }
