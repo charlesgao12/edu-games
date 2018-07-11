@@ -47,14 +47,19 @@ $(document).ready(function(){
 		'fuzhou':[389,449],
 		'shenzhen':[293,542]
 	};
-
+	var trainPosition ={x:0,y:0};
 	
 
 	var movingList =[]//to store the city list of the path input from blockly
+	
 	var dotList=new Array();// to store the already moved path in the draw flow
+
+	var result = undefined
 
 	function move(from, through,to){
 		movingList =[]
+		result = undefined
+
 		movingList.push(from.toLowerCase())
 		var thrus = through.split("|")
 		for (var i in thrus) {
@@ -63,18 +68,43 @@ $(document).ready(function(){
 			}
 		}
 		movingList.push(to.toLowerCase());
-		console.log(movingList)
+		$.ajax({
+			type:"POST",
+			url: "http://localhost:9999/DeepFirst",
+			data: JSON.stringify(movingList),
+			contentType:"application/json; charset=utf-8",
+			dataType:"json",
+			success: function(data){
+				console.log(data.res)
+				result = data;
+				draw();
+			},
+			failure: function(err){
+				alert(err)
+			}
+		});
+		// $.get("http://localhost:9999/DeepFirst",{path:},function(data,status){
+		// 	if(status == 'success'){
+		// 		var j = JSON.parse(data)
+		// 		alert(j[0])
+		// 	}
+		//  });
+
+
+		console.log('move:'+movingList)
 	}
 
 	function getCityCoor(city){
-		var xx = cities[city][0]-15;
-		var yy = cities[city][1]-15;
+		var xx = cities[city][0];
+		var yy = cities[city][1];
 		return {x:xx,y:yy}
 	}
 
 	function draw(){
-		// actionList = actions;
+		// actionList = actions;		
 		dotList=[getCityCoor(popleft(movingList))];//pop the first city and store to dotList as starting point
+		console.log('draw:'+dotList)
+		trainPosition = {x:dotList[0].x,y:dotList[0].y}//be careful cannot direct use 'trainPosition = dotList[0]' as it will pass the dotList[0] address to trainPosition, then once trainPosition changed, dotList also changed unexpectedly
 		setTimeout(animation,500);//delay to start animation
 
 	}
@@ -93,48 +123,62 @@ $(document).ready(function(){
 	//the animation function to draw on canvas, also work as callback
 	function animation(){
 		if(movingList.length >0){
-			action = popleft(movingList)
-			window.requestAnimationFrame(function(){
-				trainMove(action,animation)	
-			});
-			
-
-		}else{//this is also the callback function, so can check the result here
-			var isCorrect = true;
-			while(points.length>1){//at least 2 points
-				lastPoint = points.pop();
-				previous = points[points.length-1];
-				console.log("checking:"+previous.x+"-"+previous.y+"  "+lastPoint.x+"-"+lastPoint.y);
-				var findMatching = false;
-				for (var i = 0; i < dotList.length-1; i++) {
-					if(
-						(matching(lastPoint,dotList[i]) && matching(previous,dotList[i+1]))||
-						(matching(lastPoint,dotList[i+1]) && matching(previous,dotList[i]))
-						)
-					{//can find a matching line
-						findMatching =true;
-						break;
-					}					
-				}
-				console.log("matching:"+findMatching);
-				if(!findMatching){
-					isCorrect = false;
-					break;
-				}
-
-			}
-
-			$("#BirdWinText").hide();
-			$("#BirdLoseText").hide();
-
-			if(isCorrect){
-				$("#BirdWinText").show();
-				
-			}else{
-
+			city =popleft(movingList);
+			if(!result.res && result.wrongCity == city){
 				$("#BirdLoseText").show();
 
 			}
+			else{
+				action = getCityCoor(city)
+				window.requestAnimationFrame(function(){
+					trainMove(action,animation)	
+				});
+			}
+			
+			
+
+		}else {//this is also the callback function, so can check the result here
+			if(result.res){
+				
+				$("#BirdWinText").show();
+				
+
+			}
+			// var isCorrect = true;
+			// while(points.length>1){//at least 2 points
+			// 	lastPoint = points.pop();
+			// 	previous = points[points.length-1];
+			// 	console.log("checking:"+previous.x+"-"+previous.y+"  "+lastPoint.x+"-"+lastPoint.y);
+			// 	var findMatching = false;
+			// 	for (var i = 0; i < dotList.length-1; i++) {
+			// 		if(
+			// 			(matching(lastPoint,dotList[i]) && matching(previous,dotList[i+1]))||
+			// 			(matching(lastPoint,dotList[i+1]) && matching(previous,dotList[i]))
+			// 			)
+			// 		{//can find a matching line
+			// 			findMatching =true;
+			// 			break;
+			// 		}					
+			// 	}
+			// 	console.log("matching:"+findMatching);
+			// 	if(!findMatching){
+			// 		isCorrect = false;
+			// 		break;
+			// 	}
+
+			// }
+
+			// $("#BirdWinText").hide();
+			// $("#BirdLoseText").hide();
+
+			// if(isCorrect){
+			// 	$("#BirdWinText").show();
+				
+			// }else{
+
+			// 	$("#BirdLoseText").show();
+
+			// }
 			
 
 		}
@@ -164,8 +208,8 @@ $(document).ready(function(){
 		}
 
 		
-		//ctx.strokeStyle=action.style;
-		ctx.lineWidth=3;
+		ctx.strokeStyle='purple';
+		ctx.lineWidth=6;
 		console.log("stroke");
 		ctx.stroke();
 		
@@ -186,8 +230,9 @@ $(document).ready(function(){
 		trainPosition.x=x;
 		trainPosition.y=y;
 		
+		ctx.drawImage(train1,dotList[0].x-15,dotList[0].y-15,30,30)
 		
-		ctx.drawImage(train, x,y,30,30);
+		ctx.drawImage(train, x-15,y-15,30,30);
 		//ctx.moveTo(x,y);
 		//ctx.beginPath();
 	}
@@ -343,12 +388,16 @@ $(document).ready(function(){
 		ctx.beginPath();
 		
 		$("#codes").text(code);
+
+		
+
+
 		//var xml = Blockly.Xml.workspaceToDom(workspace);
 		//var xml_text = Blockly.Xml.domToText(xml);
 		//$("#codes").text(xml_text);
 		//actionList=new Array();
 		eval(code);
-		draw();
+		
 
 
 

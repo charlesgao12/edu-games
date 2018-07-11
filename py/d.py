@@ -1,4 +1,7 @@
 from collections import deque
+from http.server import HTTPServer, BaseHTTPRequestHandler
+from urllib.parse import urlparse
+import json
 
 cities = {
     'harbin': [('shenyang', 4)],
@@ -34,16 +37,13 @@ cities = {
     'shenzhen': [('fuzhou',5),('guangzhou',2)]
 }
 
-start = 'nanjing'
-dest = 'shenzhen'
+#start = 'nanjing'
+#dest = 'shenzhen'
 
 class Tree:
-
-
-
     # destTree=None
 
-    def build_tree(self):
+    def build_tree(self, start, dest):
         startingTree = {
             'parent': None,
             'root': start  # ,
@@ -97,12 +97,17 @@ class Tree:
         return path
 
 class Dij:
-    dist = {(start, start): 0}
-    path = {(start, start): [start]}
-    checked = {start: 1}
-    checklist = deque(cities[start])
+    dist = {}
+    path = {}
+    checked = {}
+    checklist = None
 
-    def dij(self):
+    def dij(self,start, dest):
+        dist = {(start, start): 0}
+        path = {(start, start): [start]}
+        checked = {start: 1}
+        checklist = deque(cities[start])
+
         while self.checklist:
             self.dd(self.checklist.popleft()[0])
 
@@ -133,13 +138,87 @@ class Dij:
                 self.dist[(start, i)] = self.dist[(start, checkPoint)] + checked_of_mine[i]
                 self.path[(start, i)] = self.path[(start, checkPoint)] + [i]
 
-
+'''
 Dij().dij()
 t=Tree()
 res=t.build_tree()
 print(res[1])
+'''
+
+
+class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):  # this is the server to handle all scratch client requests
+
+    DEEP_FIRST = '/DeepFirst'
+    FROM = 'from'
+    TO = 'to'
+
+    tree = Tree()
+
+    def deepFirst(self):
+
+        length = int(self.headers['Content-Length'])
+        b = self.rfile.read(length)
+        print(b.decode('UTF-8'))
+        input = json.loads(b.decode('UTF-8'))
+
+
+        start = input[0]
+        dest = input[-1]
+
+
+        res = self.tree.build_tree(start,dest)
+        output ={'res':False,'wrongCity':'','correctpath':[]}
+        for i in range(1,len(input)-1):
+            if input[i] != res[1][i]:
+                output['res'] = False
+                output['wrongCity']=input[i]
+                output['correctpath']=res[1]
+                break
+            elif i == len(input)-2:
+                output['res'] = True
+
+
+        print(json.dumps(output))
+        return json.dumps(output)
+
+    def do_OPTIONS(self):
+        self.send_response(200,'ok')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'X-Requested-With')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
 
 
 
+
+    def do_POST(self):
+        print(self.path)
+
+        if self.path == self.DEEP_FIRST:  # deep first
+            self.reply(self.deepFirst())
+
+
+    def reset(self):
+        print('empty reset')
+
+    # httpd.charAssignment = {} # stores the character, and it's IP, pendingAction list; the key is the character name, e.g. 1/2/3...
+    # httpd.allChars = ('a','b','c')#all available chars for selection
+    # httpd.selectedChars =[] #a list to store selected chars
+    # httpd.movingCharIndex = 0 # the index of the char that is moving at the moment, pls note it's index, not the char itself
+
+    def reply(self, strOut):  # format and send out response
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin','*')
+        self.end_headers()
+        print('replying:', strOut)
+        self.wfile.write(strOut.encode('UTF-8'))
+
+    def log_message(self, format, *args):
+        return
+
+
+httpd = HTTPServer(('localhost', 9999), SimpleHTTPRequestHandler)
+httpd.serve_forever()
 
 
