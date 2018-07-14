@@ -9,10 +9,7 @@ function coordinate(e){
 }
 
 $(document).ready(function(){
-	$("#PigWinText").hide();
-	$("#PigLoseText").hide();
-	$("#BirdWinText").hide();
-	$("#BirdLoseText").hide();
+	
 
 	var cities = {
 		'harbin':[434,40],
@@ -47,9 +44,13 @@ $(document).ready(function(){
 		'fuzhou':[389,449],
 		'shenzhen':[293,542]
 	};
-	var trainPosition ={x:0,y:0};
-	
 
+	$("#PigWinText").hide();
+	$("#PigLoseText").hide();
+	$("#BirdWinText").hide();
+	$("#BirdLoseText").hide();
+	$("#BetterAnswer").hide();
+	var trainPosition ={x:0,y:0};
 	var movingList =[]//to store the city list of the path input from blockly
 	
 	var dotList=new Array();// to store the already moved path in the draw flow
@@ -70,7 +71,7 @@ $(document).ready(function(){
 		movingList.push(to.toLowerCase());
 		$.ajax({
 			type:"POST",
-			url: "http://localhost:9999/DeepFirst",
+			url: "http://localhost:9999"+alg,
 			data: JSON.stringify(movingList),
 			contentType:"application/json; charset=utf-8",
 			dataType:"json",
@@ -102,7 +103,7 @@ $(document).ready(function(){
 
 	function draw(){
 		// actionList = actions;		
-		dotList=[getCityCoor(popleft(movingList))];//pop the first city and store to dotList as starting point
+		dotList=[getCityCoor(movingList[0])];//pop the first city and store to dotList as starting point
 		console.log('draw:'+dotList)
 		trainPosition = {x:dotList[0].x,y:dotList[0].y}//be careful cannot direct use 'trainPosition = dotList[0]' as it will pass the dotList[0] address to trainPosition, then once trainPosition changed, dotList also changed unexpectedly
 		setTimeout(animation,500);//delay to start animation
@@ -124,7 +125,7 @@ $(document).ready(function(){
 	function animation(){
 		if(movingList.length >0){
 			city =popleft(movingList);
-			if(!result.res && result.wrongCity == city){
+			if(result.res<0 && result.wrongCity == city){
 				$("#BirdLoseText").show();
 
 			}
@@ -138,10 +139,13 @@ $(document).ready(function(){
 			
 
 		}else {//this is also the callback function, so can check the result here
-			if(result.res){
+			if(result.res > 0){
 				
 				$("#BirdWinText").show();
 				
+			}
+			else if (result.res ==0){
+				$("#BetterAnswer").show();
 
 			}
 			// var isCorrect = true;
@@ -364,7 +368,6 @@ $(document).ready(function(){
 	
 
 	
-	var initCode = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"mapp\" id=\"#NnX$U2J1|cTX)vdm=^*\" x=\"76\" y=\"116\"><field name=\"from\">Harbin</field><field name=\"to\">Dalian</field><statement name=\"through\"><block type=\"city\" id=\"iMyP#7`U_[!-nExu8r-t\"><field name=\"city\">Shenyang</field></block></statement></block></xml>";
 	var xml = Blockly.Xml.textToDom(initCode);
 	Blockly.Xml.domToWorkspace(xml, workspace);
 	//end of startting
@@ -379,6 +382,7 @@ $(document).ready(function(){
 		$("#PigLoseText").hide();
 		$("#BirdWinText").hide();
 		$("#BirdLoseText").hide();
+		$("#BetterAnswer").hide();
 		setStrokeStyle("#000000");
 		pencilAngle = 0;
 		
@@ -412,10 +416,10 @@ $(document).ready(function(){
 
 	//$("button#reset").offset({top:450,left:100});
 	$("button#reset").click(function(){
-		// reset();
-		var xml = Blockly.Xml.workspaceToDom(workspace);
-		var xml_text = Blockly.Xml.domToText(xml);
-		$("#codes").text(xml_text);
+		window.location.reload()
+		// var xml = Blockly.Xml.workspaceToDom(workspace);
+		// var xml_text = Blockly.Xml.domToText(xml);
+		// $("#codes").text(xml_text);
 	});
 
 	
@@ -450,16 +454,27 @@ $(document).ready(function(){
 		$("#PigLoseText").hide();
 		$("#BirdWinText").hide();
 		$("#BirdLoseText").hide();
+		$("#BetterAnswer").hide();
+		trainPosition ={x:0,y:0};
+		movingList =[]//to store the city list of the path input from blockly
+		
+		dotList=new Array();// to store the already moved path in the draw flow
+
+		result = undefined
 
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 			
-		pencilAngle = 0;
-		trainPosition ={x:0,y:0};
-		actionList = new Array();
-		strokeStyle = '#000000';
-		moveTo(0,0);
-		points=getPoints();
+		// pencilAngle = 0;
+		// trainPosition ={x:0,y:0};
+		// actionList = new Array();
+		// strokeStyle = '#000000';
+		// moveTo(0,0);
+		// points=getPoints();
 		initBox();
+		// workspace =Blockly.inject('blocklyDiv',{toolbox:document.getElementById('toolbox')});
+		// workspace.clear();
+		// var xml = Blockly.Xml.textToDom(initCode);
+		// Blockly.Xml.domToWorkspace(xml, workspace);
 		  	
 		  	
 

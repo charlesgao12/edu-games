@@ -23,10 +23,10 @@
 
 
 .Blockly{
-	height: 550px;
+	height: 450px;
 	width: 500px;
 	left: 550px;
-	top: 8px;
+	top: 60px;
 	position: absolute;
 }
 .canvas{
@@ -61,6 +61,25 @@
 	left: -450px;
 	top: 400px;
 }
+.Title{
+	font-size: 25;
+	font-style: bold;
+	color: green;
+	position: absolute;
+	visibility: visible;
+	left: 10px;
+	top: -50px;	
+}
+.BetterAnswer{
+	font-size: 30;
+	font-style: bold;
+	background: orange;
+	color: white;
+	position: absolute;
+	visibility: visible;
+	left: -500px;
+	top: 30px;
+}
 .BirdWin{
 	font-size: 30;
 	font-style: bold;
@@ -69,7 +88,7 @@
 	position: absolute;
 	visibility: visible;
 	left: -500px;
-	top: 80px;
+	top: 30px;
 }
 .BirdLose{
 	font-size: 30;
@@ -79,18 +98,18 @@
 	position: absolute;
 	visibility: visible;
 	left: -500px;
-	top: 80px;
+	top: 30px;
 }
 .moveButton{
 	position: absolute;
 	left: 420px;
-	top: 555px;
+	top: 455px;
 
 }
 .resetButton{
 	position: absolute;
-	left: 300px;
-	top: 555px;
+	left: 350px;
+	top: 455px;
 }
 .pointer{
 	background:#FF0303;
@@ -114,13 +133,3 @@ transform:          rotate(90deg);
 -o-transform:       rotate(90deg);
 }
 
-.Title{
-	font-size: 20;
-	font-style: bold;
-	color: red;
-	position: absolute;
-	visibility: visible;
-	left: -500px;
-	top: 20px;
-
-}

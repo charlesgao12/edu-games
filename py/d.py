@@ -43,6 +43,9 @@ cities = {
 class Tree:
     # destTree=None
 
+    '''
+    return (whether has path, the path)
+    '''
     def build_tree(self, start, dest):
         startingTree = {
             'parent': None,
@@ -102,19 +105,21 @@ class Dij:
     checked = {}
     checklist = None
 
+    '''
+    return the (dist, path)
+    '''
     def dij(self,start, dest):
-        dist = {(start, start): 0}
-        path = {(start, start): [start]}
-        checked = {start: 1}
-        checklist = deque(cities[start])
+        self.dist = {(start, start): 0}
+        self.path = {(start, start): [start]}
+        self.checked = {start: 1}
+        self.checklist = deque(cities[start])
 
         while self.checklist:
-            self.dd(self.checklist.popleft()[0])
+            self.dd(self.checklist.popleft()[0], start)
 
-        print(self.dist[start,dest])
-        print(self.path[start, dest])
+        return self.dist[(start, dest)], self.path[(start, dest)]
 
-    def dd(self,checkPoint):
+    def dd(self,checkPoint,start):
         children = cities[checkPoint]  # get checkPoint's children
         tempdist = 999999
         tempTarget = None  # the checked point that has the shortest path to checkPoint
@@ -149,34 +154,90 @@ print(res[1])
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):  # this is the server to handle all scratch client requests
 
     DEEP_FIRST = '/DeepFirst'
+    DIJKSTRA = '/Dijkstra'
     FROM = 'from'
     TO = 'to'
 
     tree = Tree()
+    dij = Dij()
 
-    def deepFirst(self):
 
+    '''to check whether this input can complete the journey
+    return (whether can complete, wrong city name if the path is wrong, number of hours) 
+    '''
+    def can_complete(self,input):
+        time = 0
+        res = True
+        wrongCity = None
+        for i in range(0,len(input)-1):
+            inLeaf = False
+            for j in cities[input[i]]:
+                if input[i+1] == j[0]:
+                    inLeaf = True
+                    time += j[1]
+                    break # found a child, then continue next checking
+
+            if not inLeaf: # found a point that is not in the leaf, then return false
+                res = False
+                wrongCity = input[i]
+                break
+        return res,wrongCity,time
+
+    def getPostContent(self):
         length = int(self.headers['Content-Length'])
         b = self.rfile.read(length)
         print(b.decode('UTF-8'))
         input = json.loads(b.decode('UTF-8'))
+        return input
 
+
+
+
+    def dijkstra(self):
+        output = {'res': -1, 'wrongCity': '', 'correctpath': [], 'time': 0}
+        input = self.getPostContent()
 
         start = input[0]
         dest = input[-1]
+        alg_res = self.dij.dij(start, dest)
+
+        res = self.can_complete(input)
+        if res[0]:  # can go to destination
+            if res[2] <= alg_res[0]:  # the answer is not worse than the algorithm
+                output['res'] = 1
+                output['time'] = alg_res[0]
+            else:
+                output['res'] = 0
+                output['time'] = res[2]
+        else:  # cannot go to dest
+            output['res'] = -1
+            output['wrongCity'] = res[1]
+
+        output['correctpath'] = alg_res[1]
+
+        print(json.dumps(output))
+        return json.dumps(output)
 
 
-        res = self.tree.build_tree(start,dest)
-        output ={'res':False,'wrongCity':'','correctpath':[]}
-        for i in range(1,len(input)-1):
-            if input[i] != res[1][i]:
-                output['res'] = False
-                output['wrongCity']=input[i]
-                output['correctpath']=res[1]
-                break
-            elif i == len(input)-2:
-                output['res'] = True
+    def deepFirst(self):
+        output = {'res': -1, 'wrongCity': '', 'correctpath': [],'count':0}
+        input = self.getPostContent()
 
+        start = input[0]
+        dest = input[-1]
+        tree_res = self.tree.build_tree(start,dest)
+
+        res = self.can_complete(input)
+        if res[0]:  # can go to destination
+            if len(input) <= len(tree_res[1]):# the answer is not worse than the algorithm
+                output['res'] = 1
+            else:
+                output['res'] = 0
+        else:  # cannot go to dest
+            output['res'] = -1
+            output['wrongCity'] = res[1]
+
+        output['correctpath'] = tree_res[1]
 
         print(json.dumps(output))
         return json.dumps(output)
@@ -197,6 +258,8 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):  # this is the server to
 
         if self.path == self.DEEP_FIRST:  # deep first
             self.reply(self.deepFirst())
+        elif self.path == self.DIJKSTRA:  # dijkstra
+            self.reply(self.dijkstra())
 
 
     def reset(self):
