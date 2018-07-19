@@ -100,12 +100,13 @@ class Tree:
         return path
 
 class Dij:
-    dist = {}
-    path = {}
-    checked = {}
-    checklist = None
+    dist = {}# to store the shortest path's distance
+    path = {}# to store the shortest path
+    checked = {}# store checked nodes
+    checklist = None#store nodes to be checked
 
     '''
+    start the dijkstra algorithm
     return the (dist, path)
     '''
     def dij(self,start, dest):
