@@ -1,8 +1,10 @@
-from collections import deque
+
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 import json
 
+from collections import deque
+#represent each city and the distance to their neighbours:
 cities = {
     'harbin': [('shenyang', 4)],
     'shenyang': [('harbin',4), ('dalian',3), ('qinhuangdao',5), ('beijing',4)],
@@ -37,8 +39,6 @@ cities = {
     'shenzhen': [('fuzhou',5),('guangzhou',2)]
 }
 
-#start = 'nanjing'
-#dest = 'shenzhen'
 
 class Tree:
     # destTree=None
@@ -47,7 +47,7 @@ class Tree:
     return (whether has path, the path)
     '''
     def build_tree(self, start, dest):
-        startingTree = {
+        startingTree = {# build the root, who has no parent
             'parent': None,
             'root': start  # ,
             # 'leaves': []
@@ -55,43 +55,30 @@ class Tree:
         pendingSearch = [
             startingTree
         ]
-        searched = [start]
+        searched = [start] # the searched nodes, put the starting node in it now
 
         #destTree = None
-        searchlist = deque(pendingSearch)
+        searchlist = deque(pendingSearch)# the pending search list, start from the root
         while len(searchlist) > 0:
-            searching = searchlist.popleft()
-            children = cities[searching['root']]
-
+            searching = searchlist.popleft()# remove the first element of the searching list
+            children = cities[searching['root']]# to find the leaves of the first element's  for looping
             for i in children:
-                if dest == i[0]:
-                    destTree = {'parent': searching, 'root': dest}
+                if dest == i[0]: # found the destination, then return the tree to this node
+                    newTree = {'parent': searching, 'root': i[0]}
                     # searching['leaves'].append(destTree)
-                    return True, self.getPath(destTree)
-                elif i[0] not in searched:
+                    return True, self.getPath(newTree)
+                elif i[0] not in searched: # if this leaf node has not been searched, add it as a leaf
                     newTree = {'parent': searching, 'root': i[0]}
                     # searching['leaves'].append(newTree)
-                    searched.append(i[0])
+                    searched.append(i[0])# do not search the same node
                     searchlist.append(newTree)
 
-            '''if dest in children:
-                destTree = {'parent': searching, 'root': dest}
-                # searching['leaves'].append(destTree)
-                return True, destTree
-            else:
-                for i in children:
-                    if i not in searched:
-                        newTree = {'parent': searching, 'root': i}
-                        # searching['leaves'].append(newTree)
-                        searched.append(i)
-                        searchlist.append(newTree)
-            '''
+        return False, None # return None if cannot find out the path
 
-        return False, None
+    '''
+    this function return the path of a tree
 
-    #res = build_tree()
-    #print(res[0])
-
+    '''
     def getPath(self,node):
         path=[]
         while node != None:
@@ -123,25 +110,25 @@ class Dij:
     def dd(self,checkPoint,start):
         children = cities[checkPoint]  # get checkPoint's children
         tempdist = 999999
-        tempTarget = None  # the checked point that has the shortest path to checkPoint
-        checked_of_mine = {}
-        for i in children:
-            checking = i[0]
-            if checking in self.checked:
-                checked_of_mine[checking] = i[1]
+        tempTarget = None  # to store the leaf target that has the shortest path to checkPoint
+        saved_dist = {} # the distance that searched before, but need to re-check here
+        for i in children: # to loop leaves of checkPoint
+            checking = i[0] # a city of leaves
+            if checking in self.checked: # if the city already checked before, then try to see if any shorter path, else this city need to be check
+                saved_dist[checking] = i[1] # the dist between checkPoint and the checking leaf
                 if (self.dist[(start, checking)] + i[1]) < tempdist:
                     tempdist = self.dist[(start, checking)] + i[1]  # find the shorter dist
                     tempTarget = checking
-            else:
+            elif i not in self.checklist: # if this leaf not in checklist then add it to be checked later
                 self.checklist.append(i)
-        self.dist[(start, checkPoint)] = tempdist
+        self.dist[(start, checkPoint)] = tempdist # update the dist between start and check point
         self.path[(start, checkPoint)] = self.path[(start, tempTarget)] + [checkPoint]
-        self.checked[checkPoint] = 1
+        self.checked[checkPoint] = 1 # marked checkpoint as checked, pls note that it's not marking its leaves!
         # recheck the checked points to see if any shorter path
-        del checked_of_mine[tempTarget]  # remove the one that in the path to checkPoint
-        for i in checked_of_mine:
-            if self.dist[(start, checkPoint)] + checked_of_mine[i] < self.dist[(start, i)]:
-                self.dist[(start, i)] = self.dist[(start, checkPoint)] + checked_of_mine[i]
+        del saved_dist[tempTarget]  # remove the one that in the path to checkPoint
+        for i in saved_dist: # to find if a shorter path to leaves that already checked before
+            if self.dist[(start, checkPoint)] + saved_dist[i] < self.dist[(start, i)]:
+                self.dist[(start, i)] = self.dist[(start, checkPoint)] + saved_dist[i]
                 self.path[(start, i)] = self.path[(start, checkPoint)] + [i]
 
 '''
