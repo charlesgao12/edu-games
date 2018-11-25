@@ -430,6 +430,7 @@ $(document).ready(function(){
 
 	function initBox(){
 		ctx.drawImage(map,0,0);
+		ctx.drawImage(map,0,0);
 		
 		// ctx.beginPath();
 		// ctx.moveTo(points[0].x,points[0].y);

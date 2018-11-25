@@ -269,7 +269,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):  # this is the server to
         return
 
 
-httpd = HTTPServer(('localhost', 9999), SimpleHTTPRequestHandler)
+httpd = HTTPServer(('', 9999), SimpleHTTPRequestHandler)
 httpd.serve_forever()
 
 

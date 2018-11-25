@@ -1,0 +1,17 @@
+.question{
+	font-size: 30;
+	font-style: bold;
+	color: black;
+	
+	visibility: visible;
+	left: 50px;
+	top: 10px;
+}
+
+.answer{
+	background:#EEEEEE;
+	left: 50px;
+	top: 100px;
+	
+
+}

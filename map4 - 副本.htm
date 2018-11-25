@@ -1,0 +1,60 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="_map.css">
+	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="blockly-master/blockly-master/blockly_compressed.js"></script>
+	<script type="text/javascript" src="blockly-master/blockly-master/blocks_compressed.js"></script>
+	<script type="text/javascript" src="blockly-master/blockly-master/msg/js/en.js"></script>
+	<script type="text/javascript" src="blockly-master/blockly-master/javascript_compressed.js"></script>
+	<script type="text/javascript" src="blockly-master/blockly-master/generators/javascript/myblockcodes.js"></script>
+	<script type="text/javascript" src="MyBlocks.js"></script>
+	<script type="text/javascript" src="_map.js"></script>
+
+</head>
+<body>
+	
+	<canvas id="canvas" class="canvas" 	width="500" height="600" ></canvas>
+	<!--onmousemove="coordinate(event)" -->
+	
+	
+	<img id="train" src="map/train.png" style="visibility: hidden">
+	<img id="train1" src="map/train1.png" style="visibility: hidden">
+	<img id="map" src="map/map.png" style="visibility: hidden">
+	
+	<div id="blocklyDiv" class="Blockly">
+	<xml id="toolbox" style="display: none">
+		<block type="mapp" ></block>
+		<block type="city" ></block>	
+		
+		
+		
+	</xml>
+
+	
+	<textarea id="codes" class="Codesarea"></textarea>
+	<div id="Title" style="left: -440px; top: 560px; position: absolute; font-size: 25px; font-style: bold; color: blue">上海到成都时间最短的路线</div>
+	<button id="move" class="moveButton" style="left: 20px">Go</button>
+	<button id="reset" class="resetButton">Reset</button>
+	<div id="PigWinText" class="PigWin">Pig's coordinate is correct!</div>
+	<div id="PigLoseText" class="PigLose">Pig's coordinate is wrong!</div>
+	<div id="BirdWinText" class="BirdWin">Your answer is correct!</div>
+	<div id="BirdLoseText" class="BirdLose">Your answer is wrong!</div>
+	<div id="BetterAnswer" class="BetterAnswer">Try to find a better solution</div>
+	<div id="Title" class="Title">Find the fastest path</div>
+	<script type="text/javascript">
+		var alg = "/Dijkstra";
+		var initCode = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"mapp\" id=\"#NnX$U2J1|cTX)vdm=^*\" x=\"76\" y=\"116\"><field name=\"from\">shanghai</field><field name=\"to\">chengdu</field></block></xml>";
+	
+	</script>
+
+	<!--<div id="xycoordinates"></div>-->
+
+
+
+	
+
+	<!--
+	<canvas id="canv" width="600" height="600" style="border: 1px solid #000000;">	</canvas>
+	-->
+</body>
+</html>
