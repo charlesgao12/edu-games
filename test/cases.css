@@ -1,8 +1,25 @@
+.q_and_a{
+	position: absolute;
+	left: 50px;
+	top: 100px;
+}
+.result_title{
+	color: red;
+	font-size: 20px;
+	font-style: bold;
+
+}
+.results{
+	position: absolute;
+	left: 50px;
+	top: 100px;
+	
+}
 .question{
-	font-size: 30;
+	font-size: 20px;
 	font-style: bold;
 	color: black;
-	
+	position: relative;
 	visibility: visible;
 	left: 50px;
 	top: 10px;
@@ -10,8 +27,20 @@
 
 .answer{
 	background:#EEEEEE;
+	position: relative;
 	left: 50px;
-	top: 100px;
-	
+	top: 10px;
+}
 
+.next{
+
+	position: relative;
+	left: 50px;
+	top: 30px;
+}
+.submit{
+
+	position: relative;
+	left: 100px;
+	top: 30px;
 }

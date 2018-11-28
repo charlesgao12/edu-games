@@ -1,0 +1,17 @@
+
+read({
+	"index":0,
+	"question":["请选择运行下面指令后画出来的图形：<br>","pics/q1.PNG"]
+
+	,
+	"answers":[
+		["pics/rec.PNG"],
+		["pics/star.PNG"],
+		["pics/tri.PNG"],
+		["以上都不是"]
+		
+	],
+	"correct":"1000",
+	"answer":"0000"
+	
+})

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Qianlima</title>
+<link href="css/zzsc.css" rel="stylesheet">
+<link href="css/maps.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="cases.css">
+<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="cases.js"></script>
+<script type="text/javascript" src="js/maps.js"></script>
+<script type="text/javascript" src="js/google.js"></script>
+
+
+<script type="text/javascript" src="cases/1.json?callback=read"></script>
+<script type="text/javascript" src="cases/2.json?callback=read"></script>
+
+
+
+
+</head>
+
+<body>
+
+
+
+<div class="content">
+	
+	<ul class="venus-menu">
+		
+		<li class="active"><a href="#"><i class="icon-home"></i>Home</a></li>
+		
+		<li><a href="#"><i class="icon-magic"></i>All stuffs</a>
+			<ul>
+				<li><a href="javascript:play(0);">1. Moving</a></li>
+				<li><a href="javascript:play(1);">2. Coordinates</a></li>
+				<li><a href="javascript:play(2);">3. Angle</a></li>
+				<li><a href="#">4. Drawing</a>
+					<ul>
+						<li><a href="javascript:play(3);">1. Triangle</a></li>
+						<li><a href="javascript:play(4);">2. Square</a></li>
+						<li><a href="javascript:play(5);">3. Hexagon</a></li>						
+					</ul>
+				</li>
+				<li><a href="#">5. Map</a>
+					<ul>
+						<li><a href="javascript:play(6);">Trip 1</a></li>
+						<li><a href="javascript:play(7);">Trip 2</a></li>
+						<li><a href="javascript:play(8);">Trip 3</a></li>
+						<li><a href="javascript:play(9);">Trip 4</a></li>						
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li class="active"><a href="javascript:canvas();"><i class="icon-magic"></i>Canvas</a></li>
+		<li class="active"><a href="javascript:previous();"><i class="icon-chevron-left"></i>Previous</a></li>
+		<li class="active"><a href="javascript:next();"><i class="icon-chevron-right"></i>Next</a></li>
+	
+	
+</div>
+
+<div id = "q_and_a" class="q_and_a">
+	<div id="question" class="question"></div><br>
+
+	<div id="answer" class="answer">		
+	</div>
+	<button id="submit" class="submit">提交</button>
+	
+</div>
+
+<div id="results" class="results">
+	<div class="result_title">这是最后一题了。你的正确率是：<div id="correctness"></div><br>来看看你做错的题目：<br><br></div>	
+	
+</div>
+
+
+
+
+
+
+</body>
+
+</html>
